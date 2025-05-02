@@ -7,6 +7,12 @@ import { PlaywrightCreateProgram } from "./models/program/create-program";
 import { PlaywrightEditProgram } from "./models/program/edit-program";
 
 import dotenv from "dotenv";
+import {
+  characterFill,
+  emptyProgramFill,
+  programFill,
+} from "./data/programData";
+import { PlaywrightDeleteProgram } from "./models/program/delete-program";
 
 dotenv.config();
 
@@ -26,6 +32,7 @@ type MyFixtures = {
 
   createProgramPage: PlaywrightCreateProgram;
   editProgramPage: PlaywrightEditProgram;
+  deleteProgramPage: PlaywrightDeleteProgram;
 };
 
 export const test = base.extend<MyFixtures>({
@@ -53,6 +60,9 @@ export const test = base.extend<MyFixtures>({
   },
   editProgramPage: async ({}, use) => {
     await use(new PlaywrightEditProgram(page));
+  },
+  deleteProgramPage: async ({}, use) => {
+    await use(new PlaywrightDeleteProgram(page));
   },
 });
 
@@ -96,8 +106,9 @@ test.describe("Create Programs", () => {
     await goToProgramsPage.sidebarGoTo();
   });
 
-  test.afterEach(async ({ page }) => {
-    await page.reload();
+  test.afterEach(async ({ goToProgramsPage, deleteProgramPage }) => {
+    await goToProgramsPage.sidebarGoTo();
+    await deleteProgramPage.deleteProgram();
   });
 
   test.afterAll(async ({ logoutPage }) => {
@@ -111,25 +122,23 @@ test.describe("Create Programs", () => {
 
   test("Create Program Input All (Success)", async ({ createProgramPage }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.visibilityToggle({ visible: true });
     await createProgramPage.matchmakingToggle({ matchmaking: true });
     await createProgramPage.notificationToggle({ notification: true });
@@ -150,25 +159,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: emptyProgramFill.emptyProgramName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: false });
     await createProgramPage.bannerInput({ addBanner: false });
     await createProgramPage.submitNameFailed();
@@ -178,25 +185,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: emptyProgramFill.emptyProgramShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
@@ -206,53 +211,49 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: emptyProgramFill.emptyProgramSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
-  test("Create Program With Slug Under 5 Characters (Failed)", async ({
+  test("Create Program With Slug 1 Character (Failed)", async ({
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwt",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: characterFill.oneCharacter,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSlugFailed();
@@ -262,25 +263,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: emptyProgramFill.emptyTimezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: false });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
@@ -290,25 +289,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: emptyProgramFill.emptyStartDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: false });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
@@ -318,25 +315,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: emptyProgramFill.emptyEndDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: false });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
@@ -346,25 +341,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: emptyProgramFill.emptyRevisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: false });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
@@ -374,24 +367,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: emptyProgramFill.emptyLocation,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: false,
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
@@ -401,23 +393,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: emptyProgramFill.emptyDescription,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: false,
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
@@ -427,25 +419,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[0]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("offline");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
@@ -455,25 +445,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[1]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("online");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
@@ -483,25 +471,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
@@ -511,25 +497,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[0]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("draft");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
@@ -539,25 +523,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[1]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("upcoming");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
@@ -567,25 +549,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
@@ -595,25 +575,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[3]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("on_going");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
@@ -623,25 +601,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[4]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("ended");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
@@ -651,25 +627,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.visibilityToggle({ visible: true });
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
@@ -680,25 +654,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.visibilityToggle({ visible: false });
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
@@ -709,25 +681,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.matchmakingToggle({ matchmaking: true });
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
@@ -738,25 +708,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.matchmakingToggle({ matchmaking: false });
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
@@ -767,25 +735,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.notificationToggle({ notification: true });
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
@@ -796,25 +762,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.notificationToggle({ notification: false });
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
@@ -825,25 +789,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: false });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
@@ -853,25 +815,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: false });
     await createProgramPage.submitSuccess();
@@ -881,25 +841,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.programColorInput({
@@ -913,25 +871,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
@@ -949,25 +905,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
@@ -986,25 +940,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
@@ -1023,25 +975,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
@@ -1061,25 +1011,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
@@ -1098,25 +1046,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
@@ -1134,25 +1080,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
@@ -1170,25 +1114,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
@@ -1206,25 +1148,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
@@ -1242,25 +1182,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
@@ -1278,25 +1216,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
@@ -1314,25 +1250,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
@@ -1350,25 +1284,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
@@ -1386,25 +1318,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
@@ -1422,25 +1352,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addPurpose({
@@ -1454,25 +1382,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addPurpose({
@@ -1486,25 +1412,23 @@ test.describe("Create Programs", () => {
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
-    await createProgramPage.programNameInput({
-      programName: "qwerty",
-      programShortName: "qwt",
-      programSlug: "qwerty",
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: programFill.programSlug,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
     });
-    await createProgramPage.timezoneInput({ timezone: true });
-    await createProgramPage.startDateInput({ startDate: true });
-    await createProgramPage.endDateInput({ endDate: true });
-    await createProgramPage.revisionDateInput({ revisionDate: true });
-    await createProgramPage.locationInputFill({
-      addLocation: true,
-      location: "Jakarta, Indonesia",
-    });
-    await createProgramPage.descriptionInputFill({
-      addDescription: true,
-      description: "lorem ipsum",
-    });
-    await createProgramPage.programTypeInput("hybrid");
-    await createProgramPage.programStatusInput("open_registration");
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addAsManager({ asManager: true });
