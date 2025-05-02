@@ -14,6 +14,7 @@
     "@types/node": "^22.15.2"
   },
   "dependencies": {
+    "date-fns": "^4.1.0",
     "dotenv": "^16.5.0",
     "node-fetch": "^3.3.2"
   }

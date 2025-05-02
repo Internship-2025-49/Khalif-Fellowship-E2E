@@ -4,6 +4,7 @@ import { faker } from "@faker-js/faker/locale/id_ID";
 import fs from "fs";
 import path from "path";
 import fetch from "node-fetch";
+import { emptyProgramFill, programInput } from "../../data/programData";
 
 export class PlaywrightCreateProgram {
   readonly page: Page;
@@ -76,27 +77,15 @@ export class PlaywrightCreateProgram {
     this.programSlug = page.getByTestId("program-slug-input");
 
     this.timezoneBtn = page.getByTestId("program-timezone-button");
-    this.timezoneItem = page.getByTestId("timezone-item-asia/jakarta");
+
     this.startDateBtn = page.getByTestId("program-start-date");
-    this.nextMonthBtn = page.getByRole("button", {
-      name: "Go to the Next Month",
-    });
-    this.selectStartDate = page.getByRole("button", {
-      name: "Sunday, June 1st,",
-    });
     this.endDateBtn = page.getByTestId("program-end-date");
     this.revisionDateBtn = page.getByTestId("program-revision-end-date");
-    this.selectRevisionDate = page.getByRole("button", {
-      name: "Sunday, June 29th,",
-    });
-    this.selectEndDate = page.getByRole("button", {
-      name: "Monday, June 30th,",
-    });
 
     this.locationInput = page.getByTestId("program-location-input");
     this.descriptionInput = page.getByTestId("program-description-input");
 
-    this.visibility = page.getByRole("switch", { name: "Visible" });
+    this.visibility = page.getByRole("switch", { name: "Hidden" });
     this.matchMaking = page.locator("#matchmaking");
     this.notification = page.locator("#notification-feature");
 
@@ -114,16 +103,6 @@ export class PlaywrightCreateProgram {
       name: "Label",
       exact: true,
     });
-    this.btnPreview = page.getByRole("button", {
-      name: "Registration Form Preview",
-    });
-    this.expectPreview = page.getByRole("heading", {
-      name: "Registration Form Preview",
-    });
-    this.btnClosePreview = page
-      .locator("div")
-      .filter({ hasText: /^CloseView As all organization$/ })
-      .getByRole("button");
     this.btnRemoveReqruitment = page.getByRole("button", { name: "Remove" });
     this.inputValueName = page
       .getByRole("textbox", { name: "Radio button value" })
@@ -163,91 +142,54 @@ export class PlaywrightCreateProgram {
     fs.writeFileSync(filePath, buffer);
   }
 
+  async dateInput(date: string, button: string) {
+    await this[button].click();
+    const selectDate = await this.page.getByRole("button", {
+      name: date,
+    });
+    await selectDate.click();
+  }
+
   async navigateToCreateProgram() {
     await this.btnCreate.click();
     await expect(this.headerCreateProgram).toBeVisible();
   }
 
-  async programNameInput({
+  async programInput({
     programName,
     programShortName,
     programSlug,
-  }: {
-    programName: string;
-    programShortName: string;
-    programSlug: string;
-  }) {
+    timezone,
+    startDate,
+    endDate,
+    revisionDate,
+    location,
+    description,
+    programType,
+    programStatus,
+  }: programInput) {
     await this.programName.fill(programName);
     await this.programShortName.fill(programShortName);
     await this.programSlug.fill(programSlug);
-  }
 
-  async timezoneInput({ timezone }: { timezone?: boolean }) {
-    if (timezone) {
-      await this.timezoneBtn.click();
-      await this.timezoneItem.getByText("Asia/Jakarta+07:").click();
-    }
-  }
+    await this.timezoneBtn.click();
+    await this.page.getByTestId(`timezone-item-${timezone}`).click();
 
-  async startDateInput({ startDate }: { startDate?: boolean }) {
-    if (startDate) {
-      await this.startDateBtn.click();
-      await this.nextMonthBtn.click();
-      await this.selectStartDate.click();
-      await this.clickPage.click();
-    }
-  }
+    await this.dateInput(startDate, "startDateBtn");
+    await this.clickPage.click();
+    await this.dateInput(endDate, "endDateBtn");
+    await this.clickPage.click();
+    await this.dateInput(revisionDate, "revisionDateBtn");
+    await this.clickPage.click();
 
-  async endDateInput({ endDate }: { endDate?: boolean }) {
-    if (endDate) {
-      await this.endDateBtn.click();
-      await this.nextMonthBtn.click();
-      await this.selectEndDate.click();
-      await this.clickPage.click();
-    }
-  }
+    await this.locationInput.fill(location);
+    await this.descriptionInput.fill(description);
 
-  async revisionDateInput({ revisionDate }: { revisionDate?: boolean }) {
-    if (revisionDate) {
-      await this.revisionDateBtn.click();
-      await this.nextMonthBtn.click();
-      await this.selectRevisionDate.click();
-      await this.clickPage.click();
-    }
-  }
-
-  async locationInputFill({
-    addLocation,
-    location,
-  }: {
-    addLocation?: boolean;
-    location?: string;
-  }) {
-    if (addLocation) {
-      await this.locationInput.fill(location || "");
-    }
-  }
-
-  async descriptionInputFill({
-    addDescription,
-    description,
-  }: {
-    addDescription?: boolean;
-    description?: string;
-  }) {
-    if (addDescription) {
-      await this.descriptionInput.fill(description || "");
-    }
-  }
-
-  async programTypeInput(programType: string) {
     const programTypeLocator = this.page.getByTestId(
       `program-type-${programType}`
     );
     await programTypeLocator.click();
-  }
 
-  async programStatusInput(programStatus: string) {
     const programStatusLocator = this.page.getByTestId(
       `program-status-${programStatus}`
     );
@@ -361,10 +303,6 @@ export class PlaywrightCreateProgram {
       }
     }
 
-    await this.btnPreview.click();
-    await expect(this.expectPreview).toBeVisible();
-    await this.btnClosePreview.click();
-
     if (removeReqruitment) {
       await this.btnRemoveReqruitment.click();
     }
@@ -385,11 +323,6 @@ export class PlaywrightCreateProgram {
     if (removePurpose) {
       await this.btnRemovePurpose.click();
     }
-  }
-
-  async removeRequirement() {
-    await this.btnAddReqruitment.click();
-    await this.btnRemoveReqruitment.click();
   }
 
   async addAsManager({ asManager }: { asManager?: boolean }) {
