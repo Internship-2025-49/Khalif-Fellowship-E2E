@@ -1,7 +1,7 @@
 import { test as base, BrowserContext, Page } from "@playwright/test";
 
 import { PlaywrightLogin } from "./models/login";
-import { PlaywrightSidebarGoTo } from "./models/sidebar";
+import { PlaywrightSidebarGoTo } from "./models/layout";
 import { PlaywrightLogout } from "./models/logout";
 import { PlaywrightCreateProgram } from "./models/program/create-program";
 import { PlaywrightEditProgram } from "./models/program/edit-program";
