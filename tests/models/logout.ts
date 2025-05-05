@@ -8,7 +8,7 @@ export class PlaywrightLogout {
 
   constructor(page: Page) {
     this.dropdownLogout = page.getByRole("button", {
-      name: "Khalif - int Profile Picture",
+      name: /.*Profile Picture$/,
     });
     this.buttonLogout = page.getByRole("menuitem", { name: "Signout" });
     this.checkLogout = page.getByRole("heading", {
