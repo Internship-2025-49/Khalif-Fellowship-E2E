@@ -16,6 +16,17 @@ export type programInput = {
   programStatus: string[];
 };
 
+export type requirementInput = {
+  labelName: string;
+  fieldType: string[];
+  organizationTarget: string[];
+  requirementType: string[];
+  visibilityType: string[];
+  removeReqruitment?: boolean;
+  radioValue?: string;
+  removeValue?: boolean;
+};
+
 export const programFill = {
   programName: "Test Program",
   programShortName: "TP",
@@ -36,16 +47,19 @@ export const programFill = {
   ],
 };
 
+export const requirementFill = {
+  labelName: "Test Requirement",
+  fieldType: ["File", "Radio Button", "Selection", "Text"],
+  organizationTarget: ["Startup", "Venture Capital", "Corporate"],
+  requirementType: ["Required", "Optional"],
+  visibilityType: ["Visible", "Invisible"],
+  removeReqruitment: true,
+  radioValue: "lorem ipsum",
+  removeValue: true,
+};
+
 export const emptyProgramFill = {
-  emptyProgramName: "",
-  emptyProgramShortName: "",
-  emptyProgramSlug: "",
-  emptyTimezone: "",
-  emptyStartDate: "",
-  emptyEndDate: "",
-  emptyRevisionDate: "",
-  emptyLocation: "",
-  emptyDescription: "",
+  emptyFill: "",
 };
 
 export const characterFill = {

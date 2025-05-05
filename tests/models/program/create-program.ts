@@ -4,7 +4,11 @@ import { faker } from "@faker-js/faker/locale/id_ID";
 import fs from "fs";
 import path from "path";
 import fetch from "node-fetch";
-import { emptyProgramFill, programInput } from "../../data/programData";
+import {
+  emptyProgramFill,
+  programInput,
+  requirementInput,
+} from "../../data/programData";
 
 export class PlaywrightCreateProgram {
   readonly page: Page;
@@ -255,16 +259,7 @@ export class PlaywrightCreateProgram {
     removeReqruitment,
     radioValue,
     removeValue,
-  }: {
-    labelName: string;
-    fieldType: string;
-    organizationTarget: string;
-    requirementType: string;
-    visibilityType: string;
-    removeReqruitment: boolean;
-    radioValue?: string;
-    removeValue?: boolean;
-  }) {
+  }: requirementInput) {
     await this.btnAddReqruitment.click();
     await this.inputLabelName.fill(labelName);
 
@@ -291,9 +286,10 @@ export class PlaywrightCreateProgram {
       .getByRole("radio");
     await reqruitmentVisibilityType.click();
 
-    if (fieldType === "Selection" || fieldType === "Radio Button") {
-      const addValueName =
-        fieldType === "Selection" ? "Add Selection Value" : "Add Radio Value";
+    if (fieldType.includes("Selection") || fieldType.includes("Radio Button")) {
+      const addValueName = fieldType.includes("Selection")
+        ? "Add Selection Value"
+        : "Add Radio Value";
       const btnAddValue = this.page.getByRole("button", { name: addValueName });
       await btnAddValue.click();
       await this.inputValueName.fill(radioValue || "");

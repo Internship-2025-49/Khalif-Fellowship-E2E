@@ -11,6 +11,7 @@ import {
   characterFill,
   emptyProgramFill,
   programFill,
+  requirementFill,
 } from "./data/programData";
 import { PlaywrightDeleteProgram } from "./models/program/delete-program";
 
@@ -146,12 +147,11 @@ test.describe("Create Programs", () => {
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
-      labelName: "lorem ipsum",
-      fieldType: "Text",
-      organizationTarget: "Startup",
-      requirementType: "Required",
-      visibilityType: "Visible",
-      removeReqruitment: false,
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[0]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
     });
     await createProgramPage.submitSuccess();
   });
@@ -161,7 +161,7 @@ test.describe("Create Programs", () => {
   }) => {
     await createProgramPage.navigateToCreateProgram();
     await createProgramPage.programInput({
-      programName: emptyProgramFill.emptyProgramName,
+      programName: emptyProgramFill.emptyFill,
       programShortName: programFill.programShortName,
       programSlug: programFill.programSlug,
 
@@ -188,7 +188,7 @@ test.describe("Create Programs", () => {
     await createProgramPage.navigateToCreateProgram();
     await createProgramPage.programInput({
       programName: programFill.programName,
-      programShortName: emptyProgramFill.emptyProgramShortName,
+      programShortName: emptyProgramFill.emptyFill,
       programSlug: programFill.programSlug,
 
       timezone: programFill.timezone,
@@ -215,7 +215,7 @@ test.describe("Create Programs", () => {
     await createProgramPage.programInput({
       programName: programFill.programName,
       programShortName: programFill.programShortName,
-      programSlug: emptyProgramFill.emptyProgramSlug,
+      programSlug: emptyProgramFill.emptyFill,
 
       timezone: programFill.timezone,
 
@@ -260,6 +260,110 @@ test.describe("Create Programs", () => {
     await createProgramPage.submitSlugFailed();
   });
 
+  test("Create Program With Slug 2 Character (Failed)", async ({
+    createProgramPage,
+  }) => {
+    await createProgramPage.navigateToCreateProgram();
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: characterFill.twoCharacter,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
+    });
+    await createProgramPage.logoInput({ addLogo: true });
+    await createProgramPage.bannerInput({ addBanner: true });
+    await createProgramPage.submitSlugFailed();
+  });
+
+  test("Create Program With Slug 3 Character (Failed)", async ({
+    createProgramPage,
+  }) => {
+    await createProgramPage.navigateToCreateProgram();
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: characterFill.threeCharacter,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
+    });
+    await createProgramPage.logoInput({ addLogo: true });
+    await createProgramPage.bannerInput({ addBanner: true });
+    await createProgramPage.submitSlugFailed();
+  });
+
+  test("Create Program With Slug 4 Character (Failed)", async ({
+    createProgramPage,
+  }) => {
+    await createProgramPage.navigateToCreateProgram();
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: characterFill.fourCharacter,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
+    });
+    await createProgramPage.logoInput({ addLogo: true });
+    await createProgramPage.bannerInput({ addBanner: true });
+    await createProgramPage.submitSlugFailed();
+  });
+
+  test("Create Program With Slug 5 Character (Failed)", async ({
+    createProgramPage,
+  }) => {
+    await createProgramPage.navigateToCreateProgram();
+    await createProgramPage.programInput({
+      programName: programFill.programName,
+      programShortName: programFill.programShortName,
+      programSlug: characterFill.fiveCharacter,
+
+      timezone: programFill.timezone,
+
+      startDate: programFill.startDate,
+      endDate: programFill.endDate,
+      revisionDate: programFill.revisionDate,
+
+      location: programFill.location,
+      description: programFill.description,
+
+      programType: [programFill.programType[2]],
+      programStatus: [programFill.programStatus[2]],
+    });
+    await createProgramPage.logoInput({ addLogo: true });
+    await createProgramPage.bannerInput({ addBanner: true });
+    await createProgramPage.submitSlugFailed();
+  });
+
   test("Create Program Without Timezone (Success)", async ({
     createProgramPage,
   }) => {
@@ -269,7 +373,7 @@ test.describe("Create Programs", () => {
       programShortName: programFill.programShortName,
       programSlug: programFill.programSlug,
 
-      timezone: emptyProgramFill.emptyTimezone,
+      timezone: emptyProgramFill.emptyFill,
 
       startDate: programFill.startDate,
       endDate: programFill.endDate,
@@ -297,7 +401,7 @@ test.describe("Create Programs", () => {
 
       timezone: programFill.timezone,
 
-      startDate: emptyProgramFill.emptyStartDate,
+      startDate: emptyProgramFill.emptyFill,
       endDate: programFill.endDate,
       revisionDate: programFill.revisionDate,
 
@@ -324,7 +428,7 @@ test.describe("Create Programs", () => {
       timezone: programFill.timezone,
 
       startDate: programFill.startDate,
-      endDate: emptyProgramFill.emptyEndDate,
+      endDate: emptyProgramFill.emptyFill,
       revisionDate: programFill.revisionDate,
 
       location: programFill.location,
@@ -351,7 +455,7 @@ test.describe("Create Programs", () => {
 
       startDate: programFill.startDate,
       endDate: programFill.endDate,
-      revisionDate: emptyProgramFill.emptyRevisionDate,
+      revisionDate: emptyProgramFill.emptyFill,
 
       location: programFill.location,
       description: programFill.description,
@@ -379,7 +483,7 @@ test.describe("Create Programs", () => {
       endDate: programFill.endDate,
       revisionDate: programFill.revisionDate,
 
-      location: emptyProgramFill.emptyLocation,
+      location: emptyProgramFill.emptyFill,
       description: programFill.description,
 
       programType: [programFill.programType[2]],
@@ -406,7 +510,7 @@ test.describe("Create Programs", () => {
       revisionDate: programFill.revisionDate,
 
       location: programFill.location,
-      description: emptyProgramFill.emptyDescription,
+      description: emptyProgramFill.emptyFill,
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
@@ -892,12 +996,11 @@ test.describe("Create Programs", () => {
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
-      labelName: "lorem ipsum",
-      fieldType: "File",
-      organizationTarget: "Startup",
-      requirementType: "Required",
-      visibilityType: "Visible",
-      removeReqruitment: false,
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[0]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
     });
     await createProgramPage.submitSuccess();
   });
@@ -926,13 +1029,12 @@ test.describe("Create Programs", () => {
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
-      labelName: "lorem ipsum",
-      fieldType: "Radio Button",
-      organizationTarget: "Startup",
-      requirementType: "Required",
-      visibilityType: "Visible",
-      removeReqruitment: false,
-      radioValue: "lorem ipsum",
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[1]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
+      radioValue: requirementFill.radioValue,
     });
     await createProgramPage.submitSuccess();
   });
@@ -961,13 +1063,12 @@ test.describe("Create Programs", () => {
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
-      labelName: "lorem ipsum",
-      fieldType: "Selection",
-      organizationTarget: "Startup",
-      requirementType: "Required",
-      visibilityType: "Visible",
-      removeReqruitment: false,
-      radioValue: "lorem ipsum",
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[2]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
+      radioValue: requirementFill.radioValue,
     });
     await createProgramPage.submitSuccess();
   });
@@ -996,14 +1097,13 @@ test.describe("Create Programs", () => {
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
-      labelName: "lorem ipsum",
-      fieldType: "Radio Button",
-      organizationTarget: "Startup",
-      requirementType: "Required",
-      visibilityType: "Visible",
-      removeReqruitment: false,
-      radioValue: "lorem ipsum",
-      removeValue: true,
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[1]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
+      radioValue: requirementFill.radioValue,
+      removeValue: requirementFill.removeValue,
     });
     await createProgramPage.submitSuccess();
   });
@@ -1032,13 +1132,13 @@ test.describe("Create Programs", () => {
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
-      labelName: "lorem ipsum",
-      fieldType: "Selection",
-      organizationTarget: "Startup",
-      requirementType: "Required",
-      visibilityType: "Visible",
-      removeReqruitment: false,
-      radioValue: "lorem ipsum",
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[2]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
+      radioValue: requirementFill.radioValue,
+      removeValue: requirementFill.removeValue,
     });
     await createProgramPage.submitSuccess();
   });
@@ -1067,12 +1167,11 @@ test.describe("Create Programs", () => {
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
-      labelName: "lorem ipsum",
-      fieldType: "Text",
-      organizationTarget: "Startup",
-      requirementType: "Required",
-      visibilityType: "Visible",
-      removeReqruitment: false,
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[3]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
     });
     await createProgramPage.submitSuccess();
   });
@@ -1101,12 +1200,11 @@ test.describe("Create Programs", () => {
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
-      labelName: "lorem ipsum",
-      fieldType: "Text",
-      organizationTarget: "Startup",
-      requirementType: "Required",
-      visibilityType: "Visible",
-      removeReqruitment: false,
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[0]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
     });
     await createProgramPage.submitSuccess();
   });
@@ -1135,12 +1233,11 @@ test.describe("Create Programs", () => {
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
-      labelName: "lorem ipsum",
-      fieldType: "Text",
-      organizationTarget: "Venture Capital",
-      requirementType: "Required",
-      visibilityType: "Visible",
-      removeReqruitment: false,
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[0]],
+      organizationTarget: [requirementFill.organizationTarget[1]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
     });
     await createProgramPage.submitSuccess();
   });
@@ -1169,12 +1266,11 @@ test.describe("Create Programs", () => {
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
-      labelName: "lorem ipsum",
-      fieldType: "Text",
-      organizationTarget: "Corporate",
-      requirementType: "Required",
-      visibilityType: "Visible",
-      removeReqruitment: false,
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[0]],
+      organizationTarget: [requirementFill.organizationTarget[2]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
     });
     await createProgramPage.submitSuccess();
   });
@@ -1203,12 +1299,11 @@ test.describe("Create Programs", () => {
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
-      labelName: "lorem ipsum",
-      fieldType: "Text",
-      organizationTarget: "Startup",
-      requirementType: "Required",
-      visibilityType: "Visible",
-      removeReqruitment: false,
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[0]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
     });
     await createProgramPage.submitSuccess();
   });
@@ -1237,12 +1332,11 @@ test.describe("Create Programs", () => {
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
-      labelName: "lorem ipsum",
-      fieldType: "Text",
-      organizationTarget: "Startup",
-      requirementType: "Optional",
-      visibilityType: "Visible",
-      removeReqruitment: false,
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[0]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[1]],
+      visibilityType: [requirementFill.visibilityType[0]],
     });
     await createProgramPage.submitSuccess();
   });
@@ -1271,12 +1365,11 @@ test.describe("Create Programs", () => {
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
-      labelName: "lorem ipsum",
-      fieldType: "Text",
-      organizationTarget: "Startup",
-      requirementType: "Required",
-      visibilityType: "Visible",
-      removeReqruitment: false,
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[0]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
     });
     await createProgramPage.submitSuccess();
   });
@@ -1305,12 +1398,11 @@ test.describe("Create Programs", () => {
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
-      labelName: "lorem ipsum",
-      fieldType: "Text",
-      organizationTarget: "Startup",
-      requirementType: "Required",
-      visibilityType: "Invisible",
-      removeReqruitment: false,
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[0]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[1]],
     });
     await createProgramPage.submitSuccess();
   });
@@ -1339,12 +1431,12 @@ test.describe("Create Programs", () => {
     await createProgramPage.logoInput({ addLogo: true });
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
-      labelName: "lorem ipsum",
-      fieldType: "Text",
-      organizationTarget: "Startup",
-      requirementType: "Required",
-      visibilityType: "Visible",
-      removeReqruitment: true,
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[0]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
+      removeReqruitment: requirementFill.removeReqruitment,
     });
     await createProgramPage.submitSuccess();
   });
