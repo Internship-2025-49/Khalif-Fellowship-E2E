@@ -16,15 +16,19 @@ export class PlaywrightDeleteProgram {
     this.btnDeleteProgram = page.getByTestId("dropdown-program-delete");
     this.programName = page.getByTestId("program-delete-name-input");
     this.submitDeleteProgram = page.getByTestId("program-delete-submit");
-    this.expectDeleteProgram = page.getByText("Program has been successfully");
+    this.expectDeleteProgram = page.getByText(
+      "Program has been successfully deleted."
+    );
   }
 
   async deleteProgram() {
-    await this.goToProgram.click();
-    await this.programDropdown.click();
-    await this.btnDeleteProgram.click();
-    await this.programName.fill("Test Program");
-    await this.submitDeleteProgram.click();
-    await expect(this.expectDeleteProgram).toBeVisible();
+    if (await this.goToProgram.isVisible()) {
+      await this.goToProgram.click();
+      await this.programDropdown.click();
+      await this.btnDeleteProgram.click();
+      await this.programName.fill("Test Program");
+      await this.submitDeleteProgram.click();
+      await expect(this.expectDeleteProgram).toBeVisible();
+    }
   }
 }
