@@ -27,6 +27,20 @@ export type requirementInput = {
   removeValue?: boolean;
 };
 
+export type editProgramInput = {
+  newName?: string;
+  newSlug?: string;
+  newShortName?: string;
+  newTimezone?: string;
+  newStartDate?: string;
+  newEndDate?: string;
+  newRevisionDate?: string;
+  newLocation?: string;
+  newDescription?: string;
+  newProgramType?: string[];
+  newProgramStatus?: string[];
+};
+
 export const programFill = {
   programName: "Test Program",
   programShortName: "TP",
@@ -56,6 +70,26 @@ export const requirementFill = {
   removeReqruitment: true,
   radioValue: "lorem ipsum",
   removeValue: true,
+};
+
+export const programEditFill = {
+  newName: "Test Program Edited",
+  newSlug: "test-program-edited",
+  newShortName: "TPE",
+  newTimezone: "asia/bangkok",
+  newStartDate: format(addDays(today, 6), "MMMM do, yyyy"),
+  newEndDate: format(addDays(today, 9), "MMMM do, yyyy"),
+  newRevisionDate: format(addDays(today, 8), "MMMM do, yyyy"),
+  newLocation: "Bandung, Indonesia",
+  newDescription: "This is a test program edited",
+  newProgramType: ["offline", "online", "hybrid"],
+  newProgramStatus: [
+    "draft",
+    "upcoming",
+    "open_registration",
+    "on_going",
+    "ended",
+  ],
 };
 
 export const emptyProgramFill = {

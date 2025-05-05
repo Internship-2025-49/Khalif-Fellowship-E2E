@@ -4,17 +4,23 @@ import { faker } from "@faker-js/faker/locale/id_ID";
 import fs from "fs";
 import path from "path";
 import fetch from "node-fetch";
+import { editProgramInput } from "../../data/programData";
 
 export class PlaywrightEditProgram {
   readonly page: Page;
+  readonly clickPage: Locator;
   readonly goToProgram: Locator;
   readonly dropdownProgram: Locator;
   readonly btnEditProgram: Locator;
   readonly headerEditProgram: Locator;
+
   readonly programName: Locator;
   readonly programShortName: Locator;
+  readonly programSlug: Locator;
+
   readonly timezoneBtn: Locator;
   readonly timezoneItem: Locator;
+
   readonly startDateBtn: Locator;
   readonly nextMonthBtn: Locator;
   readonly selectStartDate: Locator;
@@ -22,179 +28,80 @@ export class PlaywrightEditProgram {
   readonly endDateBtn: Locator;
   readonly revisionDateBtn: Locator;
   readonly selectRevisionDate: Locator;
+
   readonly locationInput: Locator;
   readonly descriptionInput: Locator;
-  readonly programSlug: Locator;
+
   readonly programType: Locator;
   readonly programStatus: Locator;
+
+  readonly removeLogo: Locator;
+  readonly removeBanner: Locator;
   readonly inputLogo: Locator;
   readonly inputBanner: Locator;
+
   readonly btnSubmit: Locator;
+  readonly cancelBtn: Locator;
+
   readonly expectSuccess: Locator;
+  readonly expectFailed: Locator;
+  readonly expectProgram: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.goToProgram = page.getByTestId("card-program-qwertyuiop");
+    this.clickPage = page.locator("html");
+    this.goToProgram = page.getByTestId("card-program-test-program");
     this.dropdownProgram = page.getByTestId("dropdown-configure-program");
     this.btnEditProgram = page.getByTestId("dropdown-program-detail");
     this.headerEditProgram = page.getByRole("heading", {
       name: "Edit Program",
     });
-    this.programName = page.getByTestId("program-name-input");
-    this.programShortName = page.getByTestId("program-short-name-input");
-    this.timezoneBtn = page.getByTestId("program-timezone-button");
-    this.timezoneItem = page.getByTestId("timezone-item-asia/bangkok");
-    this.startDateBtn = page.getByTestId("program-start-date");
-    this.nextMonthBtn = page.getByRole("button", {
-      name: "Go to the Next Month",
+
+    this.programName = page.getByRole("textbox", { name: "Program Name" });
+    this.programShortName = page.getByRole("textbox", {
+      name: "Program Short Name",
     });
-    this.selectStartDate = page.getByRole("button", {
-      name: "Friday, May 2st,",
+    this.programSlug = page.getByRole("textbox", {
+      name: "Enter program slug",
     });
-    this.selectEndDate = page.getByRole("button", {
-      name: "Thursday, May 29th,",
-    });
-    this.endDateBtn = page.getByTestId("program-end-date");
-    this.revisionDateBtn = page.getByTestId("program-revision-end-date");
-    this.selectRevisionDate = page.getByRole("button", {
-      name: "Wednesday, May 28th,",
-    });
+
+    this.timezoneBtn = page.getByRole("combobox");
+
+    this.startDateBtn = page
+      .locator("div")
+      .filter({ hasText: /^Timeline Start.*$/ })
+      .getByRole("button")
+      .first();
+    this.endDateBtn = page
+      .locator("div")
+      .filter({ hasText: /^Timeline End.*$/ })
+      .getByRole("button");
+    this.revisionDateBtn = page
+      .locator("div")
+      .filter({ hasText: /^Revision End.*$/ })
+      .getByRole("button");
+
     this.locationInput = page.getByRole("textbox", { name: "Location" });
-    this.descriptionInput = page.getByTestId("program-description-input");
-    this.programSlug = page.getByTestId("program-slug-input");
-    this.programType = page.getByTestId("program-type-online");
-    this.programStatus = page.getByTestId("program-status-on_going");
+    this.descriptionInput = page.getByRole("textbox", { name: "Description" });
+
+    this.removeLogo = page.getByRole("button", { name: "Remove Logo" });
+    this.removeBanner = page.getByRole("button", { name: "Remove Banner" });
     this.inputLogo = page.getByRole("button", { name: "Program Logo" });
     this.inputBanner = page.getByRole("button", { name: "Program Banner" });
+
     this.btnSubmit = page.getByRole("button", { name: "Save Changes" });
+    this.cancelBtn = page.getByRole("button", { name: "Cancel Edit" });
+
     this.expectSuccess = page.getByRole("main").getByText("Success!");
+    this.expectFailed = page.getByText("The program slug is optional");
+    this.expectProgram = page.getByTestId("dropdown-configure-program");
   }
 
-  async editProgramName(newName: string) {
+  async goToEditProgram() {
     await this.goToProgram.click();
     await this.dropdownProgram.click();
     await this.btnEditProgram.click();
     await expect(this.headerEditProgram).toBeVisible();
-
-    await this.programName.fill(newName);
-
-    await this.btnSubmit.click();
-    await expect(this.expectSuccess).toBeVisible();
-  }
-
-  async editLocation(newLocation: string) {
-    await this.goToProgram.click();
-    await this.dropdownProgram.click();
-    await this.btnEditProgram.click();
-    await expect(this.headerEditProgram).toBeVisible();
-
-    await this.locationInput.fill(newLocation);
-
-    await this.btnSubmit.click();
-    await expect(this.expectSuccess).toBeVisible();
-  }
-
-  async editProgramShortName(newShortName: string) {
-    await this.goToProgram.click();
-    await this.dropdownProgram.click();
-    await this.btnEditProgram.click();
-    await expect(this.headerEditProgram).toBeVisible();
-
-    await this.programShortName.fill(newShortName);
-
-    await this.btnSubmit.click();
-    await expect(this.expectSuccess).toBeVisible();
-  }
-
-  async editTimezone() {
-    await this.goToProgram.click();
-    await this.dropdownProgram.click();
-    await this.btnEditProgram.click();
-    await expect(this.headerEditProgram).toBeVisible();
-
-    await this.timezoneBtn.click();
-    await this.timezoneItem.click();
-
-    await this.btnSubmit.click();
-    await expect(this.expectSuccess).toBeVisible();
-  }
-
-  async editStartDate() {
-    await this.goToProgram.click();
-    await this.dropdownProgram.click();
-    await this.btnEditProgram.click();
-    await expect(this.headerEditProgram).toBeVisible();
-
-    await this.startDateBtn.click();
-    await this.nextMonthBtn.click();
-    await this.selectStartDate.click();
-
-    await this.btnSubmit.click();
-    await expect(this.expectSuccess).toBeVisible();
-  }
-
-  async editEndDate() {
-    await this.goToProgram.click();
-    await this.dropdownProgram.click();
-    await this.btnEditProgram.click();
-    await expect(this.headerEditProgram).toBeVisible();
-
-    await this.endDateBtn.click();
-    await this.nextMonthBtn.click();
-    await this.selectEndDate.click();
-
-    await this.btnSubmit.click();
-    await expect(this.expectSuccess).toBeVisible();
-  }
-
-  async editRevisionDate() {
-    await this.goToProgram.click();
-    await this.dropdownProgram.click();
-    await this.btnEditProgram.click();
-    await expect(this.headerEditProgram).toBeVisible();
-
-    await this.revisionDateBtn.click();
-    await this.nextMonthBtn.click();
-    await this.selectRevisionDate.click();
-
-    await this.btnSubmit.click();
-    await expect(this.expectSuccess).toBeVisible();
-  }
-
-  async editProgramSlug(newSlug: string) {
-    await this.goToProgram.click();
-    await this.dropdownProgram.click();
-    await this.btnEditProgram.click();
-    await expect(this.headerEditProgram).toBeVisible();
-
-    await this.programSlug.fill(newSlug);
-
-    await this.btnSubmit.click();
-    await expect(this.expectSuccess).toBeVisible();
-  }
-
-  async editProgramType() {
-    await this.goToProgram.click();
-    await this.dropdownProgram.click();
-    await this.btnEditProgram.click();
-    await expect(this.headerEditProgram).toBeVisible();
-
-    await this.programType.click();
-
-    await this.btnSubmit.click();
-    await expect(this.expectSuccess).toBeVisible();
-  }
-
-  async editProgramStatus() {
-    await this.goToProgram.click();
-    await this.dropdownProgram.click();
-    await this.btnEditProgram.click();
-    await expect(this.headerEditProgram).toBeVisible();
-
-    await this.programStatus.click();
-
-    await this.btnSubmit.click();
-    await expect(this.expectSuccess).toBeVisible();
   }
 
   async downloadImage(url: string, filePath: string) {
@@ -203,47 +110,110 @@ export class PlaywrightEditProgram {
     fs.writeFileSync(filePath, buffer);
   }
 
+  async dateInput(date: string, button: string) {
+    await this[button].click();
+    const selectDate = await this.page.getByRole("button", {
+      name: date,
+    });
+    await selectDate.click();
+  }
+
+  async editProgram({
+    newName,
+    newSlug,
+    newShortName,
+    newTimezone,
+    newStartDate,
+    newEndDate,
+    newRevisionDate,
+    newLocation,
+    newDescription,
+    newProgramType,
+    newProgramStatus,
+  }: editProgramInput) {
+    if (newName) {
+      await this.programName.fill(newName);
+    }
+    if (newShortName) {
+      await this.programShortName.fill(newShortName);
+    }
+    if (newSlug) {
+      await this.programSlug.fill(newSlug);
+    }
+
+    if (newTimezone) {
+      await this.timezoneBtn.click();
+      await this.page.getByTestId(`timezone-item-${newTimezone}`).click();
+    }
+
+    if (newStartDate) {
+      await this.dateInput(newStartDate, "startDateBtn");
+      await this.clickPage.click();
+    }
+    if (newEndDate) {
+      await this.dateInput(newEndDate, "endDateBtn");
+      await this.clickPage.click();
+    }
+    if (newRevisionDate) {
+      await this.dateInput(newRevisionDate, "revisionDateBtn");
+      await this.clickPage.click();
+    }
+
+    if (newLocation) {
+      await this.locationInput.fill(newLocation);
+    }
+    if (newDescription) {
+      await this.descriptionInput.fill(newDescription);
+    }
+
+    if (newProgramType) {
+      const programTypeLocator = this.page.getByTestId(
+        `program-type-${newProgramType}`
+      );
+      await programTypeLocator.click();
+    }
+    if (newProgramStatus) {
+      const programStatusLocator = this.page.getByTestId(
+        `program-status-${newProgramStatus}`
+      );
+      await programStatusLocator.click();
+    }
+  }
+
   async editProgramLogo() {
     const avatarUrl = faker.image.avatar();
-    const filePath = path.resolve(__dirname, "temp_avatar.jpg");
+    const filePath = path.resolve(__dirname, "temp_avatar1.jpg");
     await this.downloadImage(avatarUrl, filePath);
 
-    await this.goToProgram.click();
-    await this.dropdownProgram.click();
-    await this.btnEditProgram.click();
-    await expect(this.headerEditProgram).toBeVisible();
-
+    if (await this.removeLogo.isVisible()) {
+      await this.removeLogo.click();
+    }
     await this.inputLogo.setInputFiles(filePath);
-
-    await this.btnSubmit.click();
-    await expect(this.expectSuccess).toBeVisible();
   }
 
   async editProgramBanner() {
     const avatarUrl = faker.image.avatar();
-    const filePath = path.resolve(__dirname, "temp_avatar.jpg");
+    const filePath = path.resolve(__dirname, "temp_avatar2.jpg");
     await this.downloadImage(avatarUrl, filePath);
 
-    await this.goToProgram.click();
-    await this.dropdownProgram.click();
-    await this.btnEditProgram.click();
-    await expect(this.headerEditProgram).toBeVisible();
-
+    if (await this.removeBanner.isVisible()) {
+      await this.removeBanner.click();
+    }
     await this.inputBanner.setInputFiles(filePath);
+  }
 
+  async submitSuccess() {
     await this.btnSubmit.click();
     await expect(this.expectSuccess).toBeVisible();
   }
 
-  async editDescription(newDescription: string) {
-    await this.goToProgram.click();
-    await this.dropdownProgram.click();
-    await this.btnEditProgram.click();
-    await expect(this.headerEditProgram).toBeVisible();
-
-    await this.descriptionInput.fill(newDescription);
-
+  async submitFailed() {
     await this.btnSubmit.click();
-    await expect(this.expectSuccess).toBeVisible();
+    await expect(this.expectFailed).toBeVisible();
+  }
+
+  async cancelEditProgram() {
+    await this.cancelBtn.click();
+    await expect(this.expectProgram).toBeVisible();
   }
 }

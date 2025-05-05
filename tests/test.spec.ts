@@ -10,6 +10,7 @@ import dotenv from "dotenv";
 import {
   characterFill,
   emptyProgramFill,
+  programEditFill,
   programFill,
   requirementFill,
 } from "./data/programData";
@@ -1533,6 +1534,253 @@ test.describe("Create Programs", () => {
   }) => {
     await createProgramPage.navigateToCreateProgram();
     await createProgramPage.submitNameFailed();
+  });
+});
+
+test.describe("Edit Program (General Information Section)", () => {
+  test.beforeAll(async ({ browser }) => {
+    context = await browser.newContext();
+    page = await context.newPage();
+    const loginPage = new PlaywrightLogin(page);
+    await page.goto("/signin");
+    await loginPage.login(email, password);
+  });
+
+  test.beforeEach(async ({ goToProgramsPage, editProgramPage }) => {
+    await goToProgramsPage.sidebarGoTo();
+    await editProgramPage.goToEditProgram();
+  });
+
+  test.afterEach(async ({ page }) => {
+    await page.reload();
+  });
+
+  test.afterAll(async ({ logoutPage }) => {
+    await logoutPage.logout();
+    await context.close();
+  });
+
+  test("Edit Program Name (Success)", async ({ editProgramPage }) => {
+    await editProgramPage.editProgram({ newName: programEditFill.newName });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Name Input 1 Character (Success)", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgram({ newName: characterFill.oneCharacter });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Name Input 2 Characters (Success)", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgram({ newName: characterFill.twoCharacter });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Name Input 3 Characters (Success)", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgram({
+      newName: characterFill.threeCharacter,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Name Input 4 Characters (Success)", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgram({
+      newName: characterFill.fourCharacter,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Name Input 5 Characters (Success)", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgram({
+      newName: characterFill.fiveCharacter,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Short Name (Success)", async ({ editProgramPage }) => {
+    await editProgramPage.editProgram({
+      newShortName: programEditFill.newShortName,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Slug (Success)", async ({ editProgramPage }) => {
+    await editProgramPage.editProgram({ newSlug: programEditFill.newSlug });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Slug Input 1 Character (Failed)", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgram({ newSlug: characterFill.oneCharacter });
+    await editProgramPage.submitFailed();
+  });
+
+  test("Edit Program Slug Input 2 Characters (Failed)", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgram({ newSlug: characterFill.twoCharacter });
+    await editProgramPage.submitFailed();
+  });
+
+  test("Edit Program Slug Input 3 Characters (Failed)", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgram({
+      newSlug: characterFill.threeCharacter,
+    });
+    await editProgramPage.submitFailed();
+  });
+
+  test("Edit Program Slug Input 4 Characters (Failed)", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgram({
+      newSlug: characterFill.fourCharacter,
+    });
+    await editProgramPage.submitFailed();
+  });
+
+  test("Edit Program Slug Input 5 Characters (Failed)", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgram({
+      newSlug: characterFill.fiveCharacter,
+    });
+    await editProgramPage.submitFailed();
+  });
+
+  test("Edit Program Timezone (Success)", async ({ editProgramPage }) => {
+    await editProgramPage.editProgram({
+      newTimezone: programEditFill.newTimezone,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Start Date (Success)", async ({ editProgramPage }) => {
+    await editProgramPage.editProgram({
+      newStartDate: programEditFill.newStartDate,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program End Date (Success)", async ({ editProgramPage }) => {
+    await editProgramPage.editProgram({
+      newEndDate: programEditFill.newEndDate,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Revision Date (Success)", async ({ editProgramPage }) => {
+    await editProgramPage.editProgram({
+      newRevisionDate: programEditFill.newRevisionDate,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Location (Success)", async ({ editProgramPage }) => {
+    await editProgramPage.editProgram({
+      newLocation: programEditFill.newLocation,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Description (Success)", async ({ editProgramPage }) => {
+    await editProgramPage.editProgram({
+      newDescription: programEditFill.newDescription,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Type To Offline (Success)", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgram({
+      newProgramType: [programEditFill.newProgramType[0]],
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Type To Online (Success)", async ({ editProgramPage }) => {
+    await editProgramPage.editProgram({
+      newProgramType: [programEditFill.newProgramType[1]],
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Type To Hybrid (Success)", async ({ editProgramPage }) => {
+    await editProgramPage.editProgram({
+      newProgramType: [programEditFill.newProgramType[2]],
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Status To Draft (Success)", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgram({
+      newProgramStatus: [programEditFill.newProgramStatus[0]],
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Status To Upcoming (Success)", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgram({
+      newProgramStatus: [programEditFill.newProgramStatus[1]],
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Status To Open Registration (Success)", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgram({
+      newProgramStatus: [programEditFill.newProgramStatus[2]],
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Status To On Going (Success)", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgram({
+      newProgramStatus: [programEditFill.newProgramStatus[3]],
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Status To Ended (Success)", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgram({
+      newProgramStatus: [programEditFill.newProgramStatus[4]],
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Logo (Success)", async ({ editProgramPage }) => {
+    await editProgramPage.editProgramLogo();
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Banner (Success)", async ({ editProgramPage }) => {
+    await editProgramPage.editProgramBanner();
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Cancel Edit Program (Success)", async ({ editProgramPage }) => {
+    await editProgramPage.cancelEditProgram();
   });
 });
 
