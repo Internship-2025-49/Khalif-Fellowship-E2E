@@ -106,12 +106,13 @@ test.describe("Create Programs", () => {
     await goToProgramsPage.sidebarGoTo();
   });
 
-  test.afterEach(async ({ goToProgramsPage, deleteProgramPage }) => {
-    await goToProgramsPage.sidebarGoTo();
-    await deleteProgramPage.deleteProgram();
+  test.afterEach(async ({ page }) => {
+    await page.reload();
   });
 
-  test.afterAll(async ({ logoutPage }) => {
+  test.afterAll(async ({ logoutPage, goToProgramsPage, deleteProgramPage }) => {
+    await goToProgramsPage.sidebarGoTo();
+    await deleteProgramPage.deleteProgram();
     await logoutPage.logout();
     await context.close();
   });
