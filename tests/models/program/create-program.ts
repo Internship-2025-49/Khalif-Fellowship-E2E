@@ -261,7 +261,7 @@ export class PlaywrightCreateProgram {
     removeValue,
   }: requirementInput) {
     await this.btnAddReqruitment.click();
-    await this.inputLabelName.fill(labelName);
+    await this.inputLabelName.fill(labelName || "");
 
     const reqruitmentFieldType = this.page
       .locator("div")
@@ -286,10 +286,16 @@ export class PlaywrightCreateProgram {
       .getByRole("radio");
     await reqruitmentVisibilityType.click();
 
-    if (fieldType.includes("Selection") || fieldType.includes("Radio Button")) {
-      const addValueName = fieldType.includes("Selection")
-        ? "Add Selection Value"
-        : "Add Radio Value";
+    if (
+      fieldType ||
+      "".includes("Selection") ||
+      fieldType ||
+      "".includes("Radio Button")
+    ) {
+      const addValueName =
+        fieldType || "".includes("Selection")
+          ? "Add Selection Value"
+          : "Add Radio Value";
       const btnAddValue = this.page.getByRole("button", { name: addValueName });
       await btnAddValue.click();
       await this.inputValueName.fill(radioValue || "");
