@@ -1796,6 +1796,214 @@ test.describe("Edit Program (General Information Section)", () => {
   });
 });
 
+test.describe("Edit Program (Program Requirements Section)", () => {
+  test.beforeAll(async ({ browser }) => {
+    context = await browser.newContext();
+    page = await context.newPage();
+    const loginPage = new PlaywrightLogin(page);
+    await page.goto("/signin");
+    await loginPage.login(email, password);
+  });
+
+  test.beforeEach(async ({ goToProgramsPage, editProgramPage }) => {
+    await goToProgramsPage.sidebarGoTo();
+    await editProgramPage.goToEditProgram();
+    await editProgramPage.goToRequirementsSection();
+  });
+
+  test.afterEach(async ({ page }) => {
+    await page.reload();
+  });
+
+  test.afterAll(async ({ logoutPage }) => {
+    await logoutPage.logout();
+    await context.close();
+  });
+
+  test("Add Reqruitment With File Field Type", async ({ editProgramPage }) => {
+    await editProgramPage.editProgramRequirements({
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[3]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Add Reqruitment With Radio Field Type", async ({ editProgramPage }) => {
+    await editProgramPage.editProgramRequirements({
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[1]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
+      radioValue: requirementFill.radioValue,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Add Reqruitment With Selection Field Type", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgramRequirements({
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[2]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
+      radioValue: requirementFill.radioValue,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Add Reqruitment With Text Field Type", async ({ editProgramPage }) => {
+    await editProgramPage.editProgramRequirements({
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[3]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Add Reqruitment With Remove Value In Radio Button Field Type", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgramRequirements({
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[1]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
+      radioValue: requirementFill.radioValue,
+      removeValue: requirementFill.removeValue,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Add Reqruitment With Remove Value In Selection Field Type", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgramRequirements({
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[2]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
+      radioValue: requirementFill.radioValue,
+      removeValue: requirementFill.removeValue,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Add Reqruitment With Organization Target Startup", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgramRequirements({
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[0]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Add Reqruitment With Organization Target Venture Capital", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgramRequirements({
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[0]],
+      organizationTarget: [requirementFill.organizationTarget[1]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Add Reqruitment With Organization Target Corporate", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgramRequirements({
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[0]],
+      organizationTarget: [requirementFill.organizationTarget[2]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Add Reqruitment With Requirement Type Required", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgramRequirements({
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[0]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Add Reqruitment With Requirement Type Optional", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgramRequirements({
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[0]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[1]],
+      visibilityType: [requirementFill.visibilityType[0]],
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Add Reqruitment With Visibility Type Visible", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgramRequirements({
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[0]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Add Reqruitment With Visibility Type Invisible", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgramRequirements({
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[0]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[1]],
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Add Reqruitment With Remove Reqruitment", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgramRequirements({
+      labelName: requirementFill.labelName,
+      fieldType: [requirementFill.fieldType[0]],
+      organizationTarget: [requirementFill.organizationTarget[0]],
+      requirementType: [requirementFill.requirementType[0]],
+      visibilityType: [requirementFill.visibilityType[0]],
+      removeReqruitment: requirementFill.removeReqruitment,
+    });
+    await editProgramPage.submitSuccess();
+  });
+});
+
 test.describe("Organizations", () => {
   test.beforeAll(async ({ browser }) => {
     context = await browser.newContext();

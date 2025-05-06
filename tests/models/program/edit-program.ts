@@ -4,7 +4,7 @@ import { faker } from "@faker-js/faker/locale/id_ID";
 import fs from "fs";
 import path from "path";
 import fetch from "node-fetch";
-import { editProgramInput } from "../../data/programData";
+import { editProgramInput, requirementInput } from "../../data/programData";
 
 export class PlaywrightEditProgram {
   readonly page: Page;
@@ -13,6 +13,9 @@ export class PlaywrightEditProgram {
   readonly dropdownProgram: Locator;
   readonly btnEditProgram: Locator;
   readonly headerEditProgram: Locator;
+  readonly requirementsSection: Locator;
+
+  //general information
 
   readonly programName: Locator;
   readonly programShortName: Locator;
@@ -40,6 +43,18 @@ export class PlaywrightEditProgram {
   readonly inputLogo: Locator;
   readonly inputBanner: Locator;
 
+  //requirements
+
+  readonly btnAddRequirement: Locator;
+  readonly reqrutmentLabel: Locator;
+
+  readonly inputValueName: Locator;
+  readonly removeValueName: Locator;
+
+  readonly btnRemoveReqruitment: Locator;
+
+  //submit & expectation
+
   readonly btnSubmit: Locator;
   readonly cancelBtn: Locator;
 
@@ -56,7 +71,11 @@ export class PlaywrightEditProgram {
     this.headerEditProgram = page.getByRole("heading", {
       name: "Edit Program",
     });
+    this.requirementsSection = page.getByRole("tab", {
+      name: "Program Requirements",
+    });
 
+    //general information
     this.programName = page.getByRole("textbox", { name: "Program Name" });
     this.programShortName = page.getByRole("textbox", {
       name: "Program Short Name",
@@ -89,6 +108,22 @@ export class PlaywrightEditProgram {
     this.inputLogo = page.getByRole("button", { name: "Program Logo" });
     this.inputBanner = page.getByRole("button", { name: "Program Banner" });
 
+    //requirements
+    this.btnAddRequirement = page.getByRole("button", {
+      name: "Add More Requirement",
+    });
+    this.reqrutmentLabel = page.getByRole("textbox", { name: "Label" }).last();
+
+    this.inputValueName = page
+      .getByRole("textbox", { name: "Radio button value" })
+      .last();
+    this.removeValueName = page
+      .locator("#radio-selection-value-0")
+      .getByRole("button")
+      .last();
+
+    this.btnRemoveReqruitment = page.getByRole("button", { name: "Remove" });
+
     this.btnSubmit = page.getByRole("button", { name: "Save Changes" });
     this.cancelBtn = page.getByRole("button", { name: "Cancel Edit" });
 
@@ -102,6 +137,10 @@ export class PlaywrightEditProgram {
     await this.dropdownProgram.click();
     await this.btnEditProgram.click();
     await expect(this.headerEditProgram).toBeVisible();
+  }
+
+  async goToRequirementsSection() {
+    await this.requirementsSection.click();
   }
 
   async downloadImage(url: string, filePath: string) {
@@ -201,6 +240,59 @@ export class PlaywrightEditProgram {
         await this.removeBanner.click();
       }
       await this.inputBanner.setInputFiles(filePath);
+    }
+  }
+
+  async editProgramRequirements({
+    labelName,
+    fieldType,
+    organizationTarget,
+    requirementType,
+    visibilityType,
+    radioValue,
+    removeValue,
+    removeReqruitment,
+  }: requirementInput) {
+    this.btnAddRequirement.click();
+    this.reqrutmentLabel.fill(labelName);
+
+    const reqruitmentFieldType = this.page
+      .locator("div")
+      .filter({ hasText: new RegExp(`^${fieldType}$`) })
+      .getByRole("radio");
+    await reqruitmentFieldType.click();
+
+    const reqruitmentOrganizationTarget = this.page.getByRole("checkbox", {
+      name: `${organizationTarget}`,
+    });
+    await reqruitmentOrganizationTarget.click();
+
+    const reqruitmentInputType = this.page
+      .locator("div")
+      .filter({ hasText: new RegExp(`^${requirementType}$`) })
+      .getByRole("radio");
+    await reqruitmentInputType.click();
+
+    const reqruitmentVisibilityType = this.page
+      .locator("div")
+      .filter({ hasText: new RegExp(`^${visibilityType}$`) })
+      .getByRole("radio");
+    await reqruitmentVisibilityType.click();
+
+    if (fieldType.includes("Selection") || fieldType.includes("Radio Button")) {
+      const addValueName = fieldType.includes("Selection")
+        ? "Add Selection Value"
+        : "Add Radio Value";
+      const btnAddValue = this.page.getByRole("button", { name: addValueName });
+      await btnAddValue.click();
+      await this.inputValueName.fill(radioValue || "");
+
+      if (removeValue) {
+        await this.removeValueName.click();
+      }
+    }
+    if (removeReqruitment) {
+      await this.btnRemoveReqruitment.click();
     }
   }
 

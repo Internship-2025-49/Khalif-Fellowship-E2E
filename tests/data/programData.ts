@@ -19,9 +19,9 @@ export type programInput = {
 export type requirementInput = {
   labelName: string;
   fieldType: string[];
-  organizationTarget: string[];
-  requirementType: string[];
-  visibilityType: string[];
+  organizationTarget?: string[];
+  requirementType?: string[];
+  visibilityType?: string[];
   removeReqruitment?: boolean;
   radioValue?: string;
   removeValue?: boolean;
