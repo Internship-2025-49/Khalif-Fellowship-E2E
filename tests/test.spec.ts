@@ -2002,6 +2002,18 @@ test.describe("Edit Program (Program Requirements Section)", () => {
     });
     await editProgramPage.submitSuccess();
   });
+
+  test("Remove Reqruitment (Success)", async ({ editProgramPage }) => {
+    await editProgramPage.editProgramRequirements({
+      removeReqruitment: requirementFill.removeReqruitment,
+    });
+  });
+
+  test("Cancel Edit Program Requirement (Success)", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.cancelEditProgram();
+  });
 });
 
 test.describe("Organizations", () => {

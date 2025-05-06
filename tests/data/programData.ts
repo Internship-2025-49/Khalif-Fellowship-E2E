@@ -17,8 +17,8 @@ export type programInput = {
 };
 
 export type requirementInput = {
-  labelName: string;
-  fieldType: string[];
+  labelName?: string;
+  fieldType?: string[];
   organizationTarget?: string[];
   requirementType?: string[];
   visibilityType?: string[];
