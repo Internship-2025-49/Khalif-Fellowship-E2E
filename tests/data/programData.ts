@@ -43,6 +43,17 @@ export type editProgramInput = {
   newBanner?: boolean;
 };
 
+export type editProgramFeatures = {
+  addNewPurpose?: boolean;
+  inputPurposeName?: string;
+  removePurpose?: boolean;
+  color?: string;
+  visible?: boolean;
+  matchmaking?: boolean;
+  notification?: boolean;
+  sponsor?: boolean;
+};
+
 export const programFill = {
   programName: "Test Program",
   programShortName: "TP",
@@ -61,10 +72,13 @@ export const programFill = {
     "on_going",
     "ended",
   ],
+  color1: "#00ffb4",
+  color2: "#00ffc6",
 };
 
 export const requirementFill = {
   labelName: "Test Requirement",
+  purposeName: "Test Purpose",
   fieldType: ["File", "Radio Button", "Selection", "Text"],
   organizationTarget: ["Startup", "Venture Capital", "Corporate"],
   requirementType: ["Required", "Optional"],

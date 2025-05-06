@@ -968,7 +968,7 @@ test.describe("Create Programs", () => {
     await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.programColorInput({
       customColor: true,
-      programColor: "#00ffb4",
+      programColor: programFill.color1,
     });
     await createProgramPage.submitSuccess();
   });
@@ -1820,7 +1820,9 @@ test.describe("Edit Program (Program Requirements Section)", () => {
     await context.close();
   });
 
-  test("Add Reqruitment With File Field Type", async ({ editProgramPage }) => {
+  test("Add Reqruitment With File Field Type (Success)", async ({
+    editProgramPage,
+  }) => {
     await editProgramPage.editProgramRequirements({
       labelName: requirementFill.labelName,
       fieldType: [requirementFill.fieldType[3]],
@@ -1831,7 +1833,9 @@ test.describe("Edit Program (Program Requirements Section)", () => {
     await editProgramPage.submitSuccess();
   });
 
-  test("Add Reqruitment With Radio Field Type", async ({ editProgramPage }) => {
+  test("Add Reqruitment With Radio Field Type (Success)", async ({
+    editProgramPage,
+  }) => {
     await editProgramPage.editProgramRequirements({
       labelName: requirementFill.labelName,
       fieldType: [requirementFill.fieldType[1]],
@@ -1843,7 +1847,7 @@ test.describe("Edit Program (Program Requirements Section)", () => {
     await editProgramPage.submitSuccess();
   });
 
-  test("Add Reqruitment With Selection Field Type", async ({
+  test("Add Reqruitment With Selection Field Type (Success)", async ({
     editProgramPage,
   }) => {
     await editProgramPage.editProgramRequirements({
@@ -1857,7 +1861,9 @@ test.describe("Edit Program (Program Requirements Section)", () => {
     await editProgramPage.submitSuccess();
   });
 
-  test("Add Reqruitment With Text Field Type", async ({ editProgramPage }) => {
+  test("Add Reqruitment With Text Field Type (Success)", async ({
+    editProgramPage,
+  }) => {
     await editProgramPage.editProgramRequirements({
       labelName: requirementFill.labelName,
       fieldType: [requirementFill.fieldType[3]],
@@ -1868,7 +1874,7 @@ test.describe("Edit Program (Program Requirements Section)", () => {
     await editProgramPage.submitSuccess();
   });
 
-  test("Add Reqruitment With Remove Value In Radio Button Field Type", async ({
+  test("Add Reqruitment With Remove Value In Radio Button Field Type (Success)", async ({
     editProgramPage,
   }) => {
     await editProgramPage.editProgramRequirements({
@@ -1883,7 +1889,7 @@ test.describe("Edit Program (Program Requirements Section)", () => {
     await editProgramPage.submitSuccess();
   });
 
-  test("Add Reqruitment With Remove Value In Selection Field Type", async ({
+  test("Add Reqruitment With Remove Value In Selection Field Type (Success)", async ({
     editProgramPage,
   }) => {
     await editProgramPage.editProgramRequirements({
@@ -1898,7 +1904,7 @@ test.describe("Edit Program (Program Requirements Section)", () => {
     await editProgramPage.submitSuccess();
   });
 
-  test("Add Reqruitment With Organization Target Startup", async ({
+  test("Add Reqruitment With Organization Target Startup (Success)", async ({
     editProgramPage,
   }) => {
     await editProgramPage.editProgramRequirements({
@@ -1911,7 +1917,7 @@ test.describe("Edit Program (Program Requirements Section)", () => {
     await editProgramPage.submitSuccess();
   });
 
-  test("Add Reqruitment With Organization Target Venture Capital", async ({
+  test("Add Reqruitment With Organization Target Venture Capital (Success)", async ({
     editProgramPage,
   }) => {
     await editProgramPage.editProgramRequirements({
@@ -1924,7 +1930,7 @@ test.describe("Edit Program (Program Requirements Section)", () => {
     await editProgramPage.submitSuccess();
   });
 
-  test("Add Reqruitment With Organization Target Corporate", async ({
+  test("Add Reqruitment With Organization Target Corporate (Success)", async ({
     editProgramPage,
   }) => {
     await editProgramPage.editProgramRequirements({
@@ -1937,7 +1943,7 @@ test.describe("Edit Program (Program Requirements Section)", () => {
     await editProgramPage.submitSuccess();
   });
 
-  test("Add Reqruitment With Requirement Type Required", async ({
+  test("Add Reqruitment With Requirement Type Required (Success)", async ({
     editProgramPage,
   }) => {
     await editProgramPage.editProgramRequirements({
@@ -1950,7 +1956,7 @@ test.describe("Edit Program (Program Requirements Section)", () => {
     await editProgramPage.submitSuccess();
   });
 
-  test("Add Reqruitment With Requirement Type Optional", async ({
+  test("Add Reqruitment With Requirement Type Optional (Success)", async ({
     editProgramPage,
   }) => {
     await editProgramPage.editProgramRequirements({
@@ -1963,7 +1969,7 @@ test.describe("Edit Program (Program Requirements Section)", () => {
     await editProgramPage.submitSuccess();
   });
 
-  test("Add Reqruitment With Visibility Type Visible", async ({
+  test("Add Reqruitment With Visibility Type Visible (Success)", async ({
     editProgramPage,
   }) => {
     await editProgramPage.editProgramRequirements({
@@ -1976,7 +1982,7 @@ test.describe("Edit Program (Program Requirements Section)", () => {
     await editProgramPage.submitSuccess();
   });
 
-  test("Add Reqruitment With Visibility Type Invisible", async ({
+  test("Add Reqruitment With Visibility Type Invisible (Success)", async ({
     editProgramPage,
   }) => {
     await editProgramPage.editProgramRequirements({
@@ -1989,7 +1995,7 @@ test.describe("Edit Program (Program Requirements Section)", () => {
     await editProgramPage.submitSuccess();
   });
 
-  test("Add Reqruitment With Remove Reqruitment", async ({
+  test("Add Reqruitment With Remove Reqruitment (Success)", async ({
     editProgramPage,
   }) => {
     await editProgramPage.editProgramRequirements({
@@ -2010,6 +2016,109 @@ test.describe("Edit Program (Program Requirements Section)", () => {
   });
 
   test("Cancel Edit Program Requirement (Success)", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.cancelEditProgram();
+  });
+});
+
+test.describe("Edit Program (Program Features Section)", () => {
+  test.beforeAll(async ({ browser }) => {
+    context = await browser.newContext();
+    page = await context.newPage();
+    const loginPage = new PlaywrightLogin(page);
+    await page.goto("/signin");
+    await loginPage.login(email, password);
+  });
+
+  test.beforeEach(async ({ goToProgramsPage, editProgramPage }) => {
+    await goToProgramsPage.sidebarGoTo();
+    await editProgramPage.goToEditProgram();
+    await editProgramPage.goToFeaturesSection();
+  });
+
+  test.afterEach(async ({ page }) => {
+    await page.reload();
+  });
+
+  test.afterAll(async ({ logoutPage }) => {
+    await logoutPage.logout();
+    await context.close();
+  });
+
+  test("Edit Program Meeting Purpose Name (Success)", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgramFeatures({
+      inputPurposeName: requirementFill.purposeName,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Add Program Meeting Purpose (Success)", async ({ editProgramPage }) => {
+    await editProgramPage.editProgramFeatures({
+      addNewPurpose: true,
+      inputPurposeName: requirementFill.purposeName,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Add Program Meeting Purpose Then Remove (Success)", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgramFeatures({
+      addNewPurpose: true,
+      inputPurposeName: requirementFill.purposeName,
+      removePurpose: true,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Remove Program Meeting Purpose (Success)", async ({
+    editProgramPage,
+  }) => {
+    await editProgramPage.editProgramFeatures({
+      removePurpose: true,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Color (Success)", async ({ editProgramPage }) => {
+    await editProgramPage.editProgramFeatures({
+      color: programFill.color2,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Visibility (Success)", async ({ editProgramPage }) => {
+    await editProgramPage.editProgramFeatures({
+      visible: true,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Matchmaking (Success)", async ({ editProgramPage }) => {
+    await editProgramPage.editProgramFeatures({
+      matchmaking: true,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Notification (Success)", async ({ editProgramPage }) => {
+    await editProgramPage.editProgramFeatures({
+      notification: true,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Edit Program Sponsor (Success)", async ({ editProgramPage }) => {
+    await editProgramPage.editProgramFeatures({
+      sponsor: true,
+    });
+    await editProgramPage.submitSuccess();
+  });
+
+  test("Cancel Edit Program Features (Success)", async ({
     editProgramPage,
   }) => {
     await editProgramPage.cancelEditProgram();

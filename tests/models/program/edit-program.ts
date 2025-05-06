@@ -4,7 +4,11 @@ import { faker } from "@faker-js/faker/locale/id_ID";
 import fs from "fs";
 import path from "path";
 import fetch from "node-fetch";
-import { editProgramInput, requirementInput } from "../../data/programData";
+import {
+  editProgramFeatures,
+  editProgramInput,
+  requirementInput,
+} from "../../data/programData";
 
 export class PlaywrightEditProgram {
   readonly page: Page;
@@ -14,6 +18,7 @@ export class PlaywrightEditProgram {
   readonly btnEditProgram: Locator;
   readonly headerEditProgram: Locator;
   readonly requirementsSection: Locator;
+  readonly featuresSection: Locator;
 
   //general information
 
@@ -53,6 +58,19 @@ export class PlaywrightEditProgram {
 
   readonly btnRemoveReqruitment: Locator;
 
+  //program features
+
+  readonly inputPurposeName: Locator;
+  readonly btnAddPurpose: Locator;
+  readonly btnRemovePurpose: Locator;
+
+  readonly programColor: Locator;
+
+  readonly visibility: Locator;
+  readonly matchMaking: Locator;
+  readonly notification: Locator;
+  readonly sponsor: Locator;
+
   //submit & expectation
 
   readonly btnSubmit: Locator;
@@ -73,6 +91,9 @@ export class PlaywrightEditProgram {
     });
     this.requirementsSection = page.getByRole("tab", {
       name: "Program Requirements",
+    });
+    this.featuresSection = page.getByRole("tab", {
+      name: "Program Features",
     });
 
     //general information
@@ -110,7 +131,7 @@ export class PlaywrightEditProgram {
 
     //requirements
     this.btnAddRequirement = page.getByRole("button", {
-      name: "Add More Requirement",
+      name: "Add Requirement",
     });
     this.reqrutmentLabel = page.getByRole("textbox", { name: "Label" }).last();
 
@@ -125,6 +146,28 @@ export class PlaywrightEditProgram {
     this.btnRemoveReqruitment = page
       .getByRole("button", { name: "Remove" })
       .last();
+
+    //program features
+
+    this.inputPurposeName = page
+      .getByRole("textbox", { name: "Enter meeting purpose" })
+      .last();
+    this.btnAddPurpose = page.getByRole("button", { name: "Add Purpose" });
+    this.btnRemovePurpose = page
+      .locator("button:has(svg.lucide.lucide-trash2)")
+      .last();
+
+    this.programColor = page
+      .locator("div")
+      .filter({ hasText: /^Program Color Theme.*$/ })
+      .getByRole("textbox");
+
+    this.visibility = page.locator("#visible");
+    this.matchMaking = page.locator("#matchmaking");
+    this.notification = page.locator("#notification-feature");
+    this.sponsor = page.locator("#sponsor");
+
+    //submit & expectation
 
     this.btnSubmit = page.getByRole("button", { name: "Save Changes" });
     this.cancelBtn = page.getByRole("button", { name: "Cancel Edit" });
@@ -143,6 +186,10 @@ export class PlaywrightEditProgram {
 
   async goToRequirementsSection() {
     await this.requirementsSection.click();
+  }
+
+  async goToFeaturesSection() {
+    await this.featuresSection.click();
   }
 
   async downloadImage(url: string, filePath: string) {
@@ -287,15 +334,12 @@ export class PlaywrightEditProgram {
     await reqruitmentVisibilityType.click();
 
     if (
-      fieldType ||
-      "".includes("Selection") ||
-      fieldType ||
-      "".includes("Radio Button")
+      fieldType?.includes("Selection") ||
+      fieldType?.includes("Radio Button")
     ) {
-      const addValueName =
-        fieldType || "".includes("Selection")
-          ? "Add Selection Value"
-          : "Add Radio Value";
+      const addValueName = fieldType.includes("Selection")
+        ? "Add Selection Value"
+        : "Add Radio Value";
       const btnAddValue = this.page
         .getByRole("button", { name: addValueName })
         .last();
@@ -308,6 +352,49 @@ export class PlaywrightEditProgram {
     }
     if (removeReqruitment) {
       await this.btnRemoveReqruitment.click();
+    }
+  }
+
+  async editProgramFeatures({
+    addNewPurpose,
+    inputPurposeName,
+    removePurpose,
+    color,
+    visible,
+    matchmaking,
+    notification,
+    sponsor,
+  }: editProgramFeatures) {
+    if (addNewPurpose) {
+      await this.btnAddPurpose.click();
+    }
+
+    if (inputPurposeName) {
+      await this.inputPurposeName.fill(inputPurposeName);
+    }
+
+    if (removePurpose) {
+      await this.btnRemovePurpose.click();
+    }
+
+    if (color) {
+      await this.programColor.fill(color);
+    }
+
+    if (visible) {
+      await this.visibility.click();
+    }
+
+    if (matchmaking) {
+      await this.matchMaking.click();
+    }
+
+    if (notification) {
+      await this.notification.click();
+    }
+
+    if (sponsor) {
+      await this.sponsor.click();
     }
   }
 
