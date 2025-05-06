@@ -118,7 +118,7 @@ export class PlaywrightEditProgram {
     await selectDate.click();
   }
 
-  async editProgram({
+  async editProgramInformation({
     newName,
     newSlug,
     newShortName,
