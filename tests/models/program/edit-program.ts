@@ -122,7 +122,9 @@ export class PlaywrightEditProgram {
       .getByRole("button")
       .last();
 
-    this.btnRemoveReqruitment = page.getByRole("button", { name: "Remove" });
+    this.btnRemoveReqruitment = page
+      .getByRole("button", { name: "Remove" })
+      .last();
 
     this.btnSubmit = page.getByRole("button", { name: "Save Changes" });
     this.cancelBtn = page.getByRole("button", { name: "Cancel Edit" });
@@ -259,31 +261,38 @@ export class PlaywrightEditProgram {
     const reqruitmentFieldType = this.page
       .locator("div")
       .filter({ hasText: new RegExp(`^${fieldType}$`) })
-      .getByRole("radio");
+      .getByRole("radio")
+      .last();
     await reqruitmentFieldType.click();
 
-    const reqruitmentOrganizationTarget = this.page.getByRole("checkbox", {
-      name: `${organizationTarget}`,
-    });
+    const reqruitmentOrganizationTarget = this.page
+      .getByRole("checkbox", {
+        name: `${organizationTarget}`,
+      })
+      .last();
     await reqruitmentOrganizationTarget.click();
 
     const reqruitmentInputType = this.page
       .locator("div")
       .filter({ hasText: new RegExp(`^${requirementType}$`) })
-      .getByRole("radio");
+      .getByRole("radio")
+      .last();
     await reqruitmentInputType.click();
 
     const reqruitmentVisibilityType = this.page
       .locator("div")
       .filter({ hasText: new RegExp(`^${visibilityType}$`) })
-      .getByRole("radio");
+      .getByRole("radio")
+      .last();
     await reqruitmentVisibilityType.click();
 
     if (fieldType.includes("Selection") || fieldType.includes("Radio Button")) {
       const addValueName = fieldType.includes("Selection")
         ? "Add Selection Value"
         : "Add Radio Value";
-      const btnAddValue = this.page.getByRole("button", { name: addValueName });
+      const btnAddValue = this.page
+        .getByRole("button", { name: addValueName })
+        .last();
       await btnAddValue.click();
       await this.inputValueName.fill(radioValue || "");
 
