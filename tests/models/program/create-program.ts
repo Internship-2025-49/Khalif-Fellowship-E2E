@@ -287,10 +287,8 @@ export class PlaywrightCreateProgram {
     await reqruitmentVisibilityType.click();
 
     if (
-      fieldType ||
-      "".includes("Selection") ||
-      fieldType ||
-      "".includes("Radio Button")
+      fieldType?.includes("Selection") ||
+      fieldType?.includes("Radio Button")
     ) {
       const addValueName =
         fieldType || "".includes("Selection")
