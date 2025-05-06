@@ -39,6 +39,8 @@ export type editProgramInput = {
   newDescription?: string;
   newProgramType?: string[];
   newProgramStatus?: string[];
+  newLogo?: boolean;
+  newBanner?: boolean;
 };
 
 export const programFill = {

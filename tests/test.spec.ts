@@ -1770,12 +1770,12 @@ test.describe("Edit Program (General Information Section)", () => {
   });
 
   test("Edit Program Logo (Success)", async ({ editProgramPage }) => {
-    await editProgramPage.editProgramLogo();
+    await editProgramPage.editProgram({ newLogo: true });
     await editProgramPage.submitSuccess();
   });
 
   test("Edit Program Banner (Success)", async ({ editProgramPage }) => {
-    await editProgramPage.editProgramBanner();
+    await editProgramPage.editProgram({ newBanner: true });
     await editProgramPage.submitSuccess();
   });
 

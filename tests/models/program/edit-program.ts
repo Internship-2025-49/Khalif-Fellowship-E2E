@@ -130,6 +130,8 @@ export class PlaywrightEditProgram {
     newDescription,
     newProgramType,
     newProgramStatus,
+    newLogo,
+    newBanner,
   }: editProgramInput) {
     if (newName) {
       await this.programName.fill(newName);
@@ -178,28 +180,28 @@ export class PlaywrightEditProgram {
       );
       await programStatusLocator.click();
     }
-  }
 
-  async editProgramLogo() {
-    const avatarUrl = faker.image.avatar();
-    const filePath = path.resolve(__dirname, "temp_avatar1.jpg");
-    await this.downloadImage(avatarUrl, filePath);
+    if (newLogo) {
+      const avatarUrl = faker.image.avatar();
+      const filePath = path.resolve(__dirname, "temp_avatar.jpg");
+      await this.downloadImage(avatarUrl, filePath);
 
-    if (await this.removeLogo.isVisible()) {
-      await this.removeLogo.click();
+      if (await this.removeLogo.isVisible()) {
+        await this.removeLogo.click();
+      }
+      await this.inputLogo.setInputFiles(filePath);
     }
-    await this.inputLogo.setInputFiles(filePath);
-  }
 
-  async editProgramBanner() {
-    const avatarUrl = faker.image.avatar();
-    const filePath = path.resolve(__dirname, "temp_avatar2.jpg");
-    await this.downloadImage(avatarUrl, filePath);
+    if (newBanner) {
+      const avatarUrl = faker.image.avatar();
+      const filePath = path.resolve(__dirname, "temp_banner.jpg");
+      await this.downloadImage(avatarUrl, filePath);
 
-    if (await this.removeBanner.isVisible()) {
-      await this.removeBanner.click();
+      if (await this.removeBanner.isVisible()) {
+        await this.removeBanner.click();
+      }
+      await this.inputBanner.setInputFiles(filePath);
     }
-    await this.inputBanner.setInputFiles(filePath);
   }
 
   async submitSuccess() {
