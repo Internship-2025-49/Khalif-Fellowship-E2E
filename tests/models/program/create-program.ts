@@ -178,22 +178,22 @@ export class PlaywrightCreateProgram {
     addBanner,
     programColor,
   }: programInput) {
-    await this.programName.fill(programName);
-    await this.programShortName.fill(programShortName);
-    await this.programSlug.fill(programSlug);
+    await this.programName.fill(programName || "");
+    await this.programShortName.fill(programShortName || "");
+    await this.programSlug.fill(programSlug || "");
 
     await this.timezoneBtn.click();
     await this.page.getByTestId(`timezone-item-${timezone}`).click();
 
-    await this.dateInput(startDate, "startDateBtn");
+    await this.dateInput(startDate || "", "startDateBtn");
     await this.clickPage.click();
-    await this.dateInput(endDate, "endDateBtn");
+    await this.dateInput(endDate || "", "endDateBtn");
     await this.clickPage.click();
-    await this.dateInput(revisionDate, "revisionDateBtn");
+    await this.dateInput(revisionDate || "", "revisionDateBtn");
     await this.clickPage.click();
 
-    await this.locationInput.fill(location);
-    await this.descriptionInput.fill(description);
+    await this.locationInput.fill(location || "");
+    await this.descriptionInput.fill(description || "");
 
     const programTypeLocator = this.page.getByTestId(
       `program-type-${programType}`

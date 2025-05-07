@@ -402,7 +402,7 @@ test.describe("Create Programs", () => {
     await createProgramPage.submitSuccess();
   });
 
-  test("Create Program Without Start Date (Success)", async ({
+  test("Create Program With Default Start Date (Success)", async ({
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
@@ -413,7 +413,6 @@ test.describe("Create Programs", () => {
 
       timezone: programFill.timezone,
 
-      startDate: emptyProgramFill.emptyFill,
       endDate: programFill.endDate,
       revisionDate: programFill.revisionDate,
 
@@ -429,7 +428,7 @@ test.describe("Create Programs", () => {
     await createProgramPage.submitSuccess();
   });
 
-  test("Create Program Without End Date (Success)", async ({
+  test("Create Program With Default End Date (Success)", async ({
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
@@ -441,7 +440,6 @@ test.describe("Create Programs", () => {
       timezone: programFill.timezone,
 
       startDate: programFill.startDate,
-      endDate: emptyProgramFill.emptyFill,
       revisionDate: programFill.revisionDate,
 
       location: programFill.location,
@@ -456,7 +454,7 @@ test.describe("Create Programs", () => {
     await createProgramPage.submitSuccess();
   });
 
-  test("Create Program Without Revision Date (Success)", async ({
+  test("Create Program With Default Revision Date (Success)", async ({
     createProgramPage,
   }) => {
     await createProgramPage.navigateToCreateProgram();
@@ -469,7 +467,6 @@ test.describe("Create Programs", () => {
 
       startDate: programFill.startDate,
       endDate: programFill.endDate,
-      revisionDate: emptyProgramFill.emptyFill,
 
       location: programFill.location,
       description: programFill.description,

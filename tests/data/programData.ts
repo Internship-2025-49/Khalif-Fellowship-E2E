@@ -3,17 +3,17 @@ import { addDays, format } from "date-fns";
 const today = new Date();
 
 export type programInput = {
-  programName: string;
-  programShortName: string;
-  programSlug: string;
-  timezone: string;
-  startDate: string;
-  endDate: string;
-  revisionDate: string;
-  location: string;
-  description: string;
-  programType: string[];
-  programStatus: string[];
+  programName?: string;
+  programShortName?: string;
+  programSlug?: string;
+  timezone?: string;
+  startDate?: string;
+  endDate?: string;
+  revisionDate?: string;
+  location?: string;
+  description?: string;
+  programType?: string[];
+  programStatus?: string[];
   visible?: boolean;
   matchmaking?: boolean;
   notification?: boolean;
