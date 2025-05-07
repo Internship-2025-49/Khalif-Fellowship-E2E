@@ -306,38 +306,48 @@ export class PlaywrightEditProgram {
     removeValue,
     removeReqruitment,
   }: requirementInput) {
-    if (await this.btnAddRequirement.isVisible()) {
-      await this.btnAddRequirement.click();
-    } else {
-      await this.btnMoreRequirement.click();
+    if (labelName) {
+      if (await this.btnAddRequirement.isVisible()) {
+        await this.btnAddRequirement.click();
+      } else {
+        await this.btnMoreRequirement.click();
+      }
+      await this.reqrutmentLabel.fill(labelName || "");
     }
-    this.reqrutmentLabel.fill(labelName || "");
 
-    const reqruitmentFieldType = this.page
-      .locator("div")
-      .filter({ hasText: new RegExp(`^${fieldType}$`) })
-      .getByRole("radio")
-      .last();
-    await reqruitmentFieldType.click();
+    if (fieldType) {
+      const reqruitmentFieldType = this.page
+        .locator("div")
+        .filter({ hasText: new RegExp(`^${fieldType}$`) })
+        .getByRole("radio")
+        .last();
+      await reqruitmentFieldType.click();
+    }
 
-    const reqruitmentOrganizationTarget = this.page
-      .locator(`#${organizationTarget}`)
-      .last();
-    await reqruitmentOrganizationTarget.click();
+    if (organizationTarget) {
+      const reqruitmentOrganizationTarget = this.page
+        .locator(`#${organizationTarget}`)
+        .last();
+      await reqruitmentOrganizationTarget.click();
+    }
 
-    const reqruitmentInputType = this.page
-      .locator("div")
-      .filter({ hasText: new RegExp(`^${requirementType}$`) })
-      .getByRole("radio")
-      .last();
-    await reqruitmentInputType.click();
+    if (requirementType) {
+      const reqruitmentInputType = this.page
+        .locator("div")
+        .filter({ hasText: new RegExp(`^${requirementType}$`) })
+        .getByRole("radio")
+        .last();
+      await reqruitmentInputType.click();
+    }
 
-    const reqruitmentVisibilityType = this.page
-      .locator("div")
-      .filter({ hasText: new RegExp(`^${visibilityType}$`) })
-      .getByRole("radio")
-      .last();
-    await reqruitmentVisibilityType.click();
+    if (visibilityType) {
+      const reqruitmentVisibilityType = this.page
+        .locator("div")
+        .filter({ hasText: new RegExp(`^${visibilityType}$`) })
+        .getByRole("radio")
+        .last();
+      await reqruitmentVisibilityType.click();
+    }
 
     if (
       fieldType?.includes("Selection") ||

@@ -2059,15 +2059,16 @@ test.describe("Edit Program (Program Requirements Section)", () => {
       organizationTarget: [requirementFill.organizationTarget[0]],
       requirementType: [requirementFill.requirementType[0]],
       visibilityType: [requirementFill.visibilityType[0]],
-      removeReqruitment: requirementFill.removeReqruitment,
+      removeReqruitment: true,
     });
     await editProgramPage.submitSuccess();
   });
 
   test("Remove Reqruitment (Success)", async ({ editProgramPage }) => {
     await editProgramPage.editProgramRequirements({
-      removeReqruitment: requirementFill.removeReqruitment,
+      removeReqruitment: true,
     });
+    await editProgramPage.submitSuccess();
   });
 
   test("Cancel Edit Program Requirement (Success)", async ({
