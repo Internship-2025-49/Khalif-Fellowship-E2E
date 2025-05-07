@@ -51,6 +51,7 @@ export class PlaywrightEditProgram {
   //requirements
 
   readonly btnAddRequirement: Locator;
+  readonly btnMoreRequirement: Locator;
   readonly reqrutmentLabel: Locator;
 
   readonly inputValueName: Locator;
@@ -132,6 +133,9 @@ export class PlaywrightEditProgram {
     //requirements
     this.btnAddRequirement = page.getByRole("button", {
       name: "Add Requirement",
+    });
+    this.btnMoreRequirement = page.getByRole("button", {
+      name: "Add More Requirement",
     });
     this.reqrutmentLabel = page.getByRole("textbox", { name: "Label" }).last();
 
@@ -302,7 +306,12 @@ export class PlaywrightEditProgram {
     removeValue,
     removeReqruitment,
   }: requirementInput) {
-    this.btnAddRequirement.click();
+    if (await this.btnAddRequirement.isVisible()) {
+      await this.btnAddRequirement.click();
+    }
+    if (await this.btnMoreRequirement.isVisible()) {
+      await this.btnMoreRequirement.click();
+    }
     this.reqrutmentLabel.fill(labelName || "");
 
     const reqruitmentFieldType = this.page
