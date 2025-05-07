@@ -14,6 +14,12 @@ export type programInput = {
   description: string;
   programType: string[];
   programStatus: string[];
+  visible?: boolean;
+  matchmaking?: boolean;
+  notification?: boolean;
+  addLogo?: boolean;
+  addBanner?: boolean;
+  programColor?: string;
 };
 
 export type requirementInput = {

@@ -141,12 +141,14 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      visible: true,
+      matchmaking: true,
+      notification: true,
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.visibilityToggle({ visible: true });
-    await createProgramPage.matchmakingToggle({ matchmaking: true });
-    await createProgramPage.notificationToggle({ notification: true });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
       labelName: requirementFill.labelName,
       fieldType: [requirementFill.fieldType[0]],
@@ -177,9 +179,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: false });
-    await createProgramPage.bannerInput({ addBanner: false });
     await createProgramPage.submitNameFailed();
   });
 
@@ -203,9 +206,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -229,9 +233,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -255,9 +260,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSlugFailed();
   });
 
@@ -281,9 +287,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSlugFailed();
   });
 
@@ -307,9 +314,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSlugFailed();
   });
 
@@ -333,9 +341,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSlugFailed();
   });
 
@@ -359,9 +368,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSlugFailed();
   });
 
@@ -385,9 +395,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -411,9 +422,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -437,9 +449,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -463,9 +476,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -489,9 +503,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -515,9 +530,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -541,9 +557,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[0]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -567,9 +584,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[1]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -593,9 +611,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -619,9 +638,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[0]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -645,9 +665,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[1]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -671,9 +692,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -697,9 +719,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[3]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -723,9 +746,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[4]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -749,10 +773,12 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      visible: true,
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.visibilityToggle({ visible: true });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -776,10 +802,12 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      visible: false,
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.visibilityToggle({ visible: false });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -803,10 +831,12 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      matchmaking: true,
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.matchmakingToggle({ matchmaking: true });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -830,10 +860,12 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      matchmaking: false,
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.matchmakingToggle({ matchmaking: false });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -857,10 +889,12 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      matchmaking: true,
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.notificationToggle({ notification: true });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -884,10 +918,12 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      matchmaking: true,
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.notificationToggle({ notification: false });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.submitSuccess();
   });
 
@@ -911,9 +947,11 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: false,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: false });
-    await createProgramPage.bannerInput({ addBanner: true });
+
     await createProgramPage.submitSuccess();
   });
 
@@ -937,9 +975,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: false,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: false });
     await createProgramPage.submitSuccess();
   });
 
@@ -963,11 +1002,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
-    });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
-    await createProgramPage.programColorInput({
-      customColor: true,
+
+      addLogo: true,
+      addBanner: true,
+
       programColor: programFill.color1,
     });
     await createProgramPage.submitSuccess();
@@ -993,9 +1031,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
       labelName: requirementFill.labelName,
       fieldType: [requirementFill.fieldType[0]],
@@ -1026,9 +1065,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
       labelName: requirementFill.labelName,
       fieldType: [requirementFill.fieldType[1]],
@@ -1060,9 +1100,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
       labelName: requirementFill.labelName,
       fieldType: [requirementFill.fieldType[2]],
@@ -1094,9 +1135,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
       labelName: requirementFill.labelName,
       fieldType: [requirementFill.fieldType[1]],
@@ -1129,9 +1171,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
       labelName: requirementFill.labelName,
       fieldType: [requirementFill.fieldType[2]],
@@ -1164,9 +1207,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
       labelName: requirementFill.labelName,
       fieldType: [requirementFill.fieldType[3]],
@@ -1197,9 +1241,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
       labelName: requirementFill.labelName,
       fieldType: [requirementFill.fieldType[0]],
@@ -1230,9 +1275,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
       labelName: requirementFill.labelName,
       fieldType: [requirementFill.fieldType[0]],
@@ -1263,9 +1309,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
       labelName: requirementFill.labelName,
       fieldType: [requirementFill.fieldType[0]],
@@ -1296,9 +1343,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
       labelName: requirementFill.labelName,
       fieldType: [requirementFill.fieldType[0]],
@@ -1329,9 +1377,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
       labelName: requirementFill.labelName,
       fieldType: [requirementFill.fieldType[0]],
@@ -1362,9 +1411,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
       labelName: requirementFill.labelName,
       fieldType: [requirementFill.fieldType[0]],
@@ -1395,9 +1445,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
       labelName: requirementFill.labelName,
       fieldType: [requirementFill.fieldType[0]],
@@ -1428,9 +1479,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addRequirement({
       labelName: requirementFill.labelName,
       fieldType: [requirementFill.fieldType[0]],
@@ -1462,9 +1514,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addPurpose({
       meetingPurpose: "Business",
       removePurpose: false,
@@ -1492,9 +1545,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addPurpose({
       meetingPurpose: "",
       removePurpose: true,
@@ -1522,9 +1576,10 @@ test.describe("Create Programs", () => {
 
       programType: [programFill.programType[2]],
       programStatus: [programFill.programStatus[2]],
+
+      addLogo: true,
+      addBanner: true,
     });
-    await createProgramPage.logoInput({ addLogo: true });
-    await createProgramPage.bannerInput({ addBanner: true });
     await createProgramPage.addAsManager({ asManager: true });
     await createProgramPage.submitSuccess();
   });

@@ -171,6 +171,12 @@ export class PlaywrightCreateProgram {
     description,
     programType,
     programStatus,
+    visible,
+    matchmaking,
+    notification,
+    addLogo,
+    addBanner,
+    programColor,
   }: programInput) {
     await this.programName.fill(programName);
     await this.programShortName.fill(programShortName);
@@ -198,54 +204,34 @@ export class PlaywrightCreateProgram {
       `program-status-${programStatus}`
     );
     await programStatusLocator.click();
-  }
 
-  async visibilityToggle({ visible }: { visible?: boolean }) {
     if (visible) {
       await this.visibility.click();
     }
-  }
-
-  async matchmakingToggle({ matchmaking }: { matchmaking?: boolean }) {
     if (!matchmaking) {
       await this.matchMaking.click();
     }
-  }
-
-  async notificationToggle({ notification }: { notification?: boolean }) {
     if (!notification) {
       await this.notification.click();
     }
-  }
-
-  async logoInput({ addLogo }: { addLogo?: boolean }) {
-    const avatarUrl1 = faker.image.avatar();
-    const filePath1 = path.resolve(__dirname, "temp_avatar1.jpg");
-    await this.downloadImage(avatarUrl1, filePath1);
 
     if (addLogo) {
-      await this.inputLogo.setInputFiles(filePath1);
-    }
-  }
+      const avatarUrl = faker.image.avatar();
+      const filePath = path.resolve(__dirname, "temp_avatar.jpg");
+      await this.downloadImage(avatarUrl, filePath);
 
-  async bannerInput({ addBanner }: { addBanner?: boolean }) {
-    const avatarUrl2 = faker.image.avatar();
-    const filePath2 = path.resolve(__dirname, "temp_avatar2.jpg");
-    await this.downloadImage(avatarUrl2, filePath2);
+      await this.inputLogo.setInputFiles(filePath);
+    }
 
     if (addBanner) {
-      await this.inputBanner.setInputFiles(filePath2);
-    }
-  }
+      const avatarUrl = faker.image.avatar();
+      const filePath = path.resolve(__dirname, "temp_banner.jpg");
+      await this.downloadImage(avatarUrl, filePath);
 
-  async programColorInput({
-    customColor,
-    programColor,
-  }: {
-    customColor?: boolean;
-    programColor?: string;
-  }) {
-    if (customColor) {
+      await this.inputBanner.setInputFiles(filePath);
+    }
+
+    if (programColor) {
       await this.programColor.fill(programColor || "#FFFFFF");
     }
   }
