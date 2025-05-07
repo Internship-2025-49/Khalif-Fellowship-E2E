@@ -2047,7 +2047,7 @@ test.describe("Edit Program (Program Requirements Section)", () => {
     await editProgramPage.submitSuccess();
   });
 
-  test("Add Reqruitment With Remove Reqruitment (Success)", async ({
+  test("Add Reqruitment Then Remove Reqruitment (Success)", async ({
     editProgramPage,
   }) => {
     await editProgramPage.editProgramRequirements({
