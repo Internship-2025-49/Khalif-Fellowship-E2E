@@ -96,7 +96,7 @@ export const requirementFill = {
 
 export const programEditFill = {
   newName: "Test Program Edited",
-  newSlug: "test-program-edited",
+  newSlug: "test-program Edited",
   newShortName: "TPE",
   newTimezone: "asia/bangkok",
   newStartDate: format(addDays(today, 6), "MMMM do, yyyy"),

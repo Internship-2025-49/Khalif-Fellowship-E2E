@@ -84,7 +84,7 @@ export class PlaywrightEditProgram {
   constructor(page: Page) {
     this.page = page;
     this.clickPage = page.locator("html");
-    this.goToProgram = page.getByTestId("card-program-test-program");
+    this.goToProgram = page.getByTestId(/card-program-test-program.*/);
     this.dropdownProgram = page.getByTestId("dropdown-configure-program");
     this.btnEditProgram = page.getByTestId("dropdown-program-detail");
     this.headerEditProgram = page.getByRole("heading", {
