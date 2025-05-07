@@ -308,8 +308,7 @@ export class PlaywrightEditProgram {
   }: requirementInput) {
     if (await this.btnAddRequirement.isVisible()) {
       await this.btnAddRequirement.click();
-    }
-    if (await this.btnMoreRequirement.isVisible()) {
+    } else {
       await this.btnMoreRequirement.click();
     }
     this.reqrutmentLabel.fill(labelName || "");
@@ -322,9 +321,7 @@ export class PlaywrightEditProgram {
     await reqruitmentFieldType.click();
 
     const reqruitmentOrganizationTarget = this.page
-      .getByRole("checkbox", {
-        name: `${organizationTarget}`,
-      })
+      .locator(`#${organizationTarget}`)
       .last();
     await reqruitmentOrganizationTarget.click();
 

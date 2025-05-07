@@ -80,7 +80,7 @@ export const requirementFill = {
   labelName: "Test Requirement",
   purposeName: "Test Purpose",
   fieldType: ["File", "Radio Button", "Selection", "Text"],
-  organizationTarget: ["Startup", "Venture Capital", "Corporate"],
+  organizationTarget: ["STARTUP", "VENTURE_CAPITAL", "CORPORATE"],
   requirementType: ["Required", "Optional"],
   visibilityType: ["Visible", "Invisible"],
   removeReqruitment: true,
