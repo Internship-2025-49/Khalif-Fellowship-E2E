@@ -11,7 +11,7 @@ export class PlaywrightDeleteProgram {
 
   constructor(page: Page) {
     this.page = page;
-    this.goToProgram = page.getByTestId("card-program-test-program");
+    this.goToProgram = page.getByTestId("card-program-test-program-created");
     this.programDropdown = page.getByTestId("dropdown-configure-program");
     this.btnDeleteProgram = page.getByTestId("dropdown-program-delete");
     this.programName = page.getByTestId("program-delete-name-input");
@@ -22,11 +22,15 @@ export class PlaywrightDeleteProgram {
   }
 
   async deleteProgram() {
-    if (await this.goToProgram.isVisible()) {
+    if (
+      await this.goToProgram
+        .waitFor({ state: "visible", timeout: 60000 })
+        .then(() => this.goToProgram.isVisible())
+    ) {
       await this.goToProgram.click();
       await this.programDropdown.click();
       await this.btnDeleteProgram.click();
-      await this.programName.fill("Test Program");
+      await this.programName.fill("Test Program Created");
       await this.submitDeleteProgram.click();
       await expect(this.expectDeleteProgram).toBeVisible();
     }
