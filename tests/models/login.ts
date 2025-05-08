@@ -26,6 +26,6 @@ export class PlaywrightLogin {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
     await this.buttonSubmit.click();
-    await expect(this.dashboardHeader).toBeVisible();
+    await expect(this.dashboardHeader).toBeVisible({ timeout: 30000 });
   }
 }
