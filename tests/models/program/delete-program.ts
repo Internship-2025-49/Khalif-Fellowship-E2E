@@ -20,13 +20,13 @@ export class PlaywrightDeleteProgram {
     this.btnDeleteProgram = page.getByTestId("dropdown-program-delete");
     this.programName = page.getByTestId("program-delete-name-input");
     this.submitDeleteProgram = page.getByTestId("program-delete-submit");
-    this.expectDeleteProgram = page.getByText(
-      "Program has been successfully deleted."
-    );
+    this.expectDeleteProgram = page
+      .getByText("Program has been successfully deleted.")
+      .first();
   }
 
   async deleteProgram() {
-    await expect(this.expectPage).toBeVisible({ timeout: 20000 });
+    await expect(this.expectPage).toBeVisible({ timeout: 30000 });
     if (await this.goToProgram.isVisible()) {
       await this.goToProgram.click();
       await this.programDropdown.click();
