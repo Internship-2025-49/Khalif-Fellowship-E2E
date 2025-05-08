@@ -53,7 +53,8 @@ export class PlaywrightCreateProgram {
   readonly btnClosePreview: Locator;
   readonly btnRemoveReqruitment: Locator;
   readonly inputValueName: Locator;
-  readonly removeValueName: Locator;
+  readonly removeSelectionValueName: Locator;
+  readonly removeRadioValueName: Locator;
 
   readonly btnAddPurpose: Locator;
   readonly inputPurposeName: Locator;
@@ -120,8 +121,12 @@ export class PlaywrightCreateProgram {
     this.btnRemovePurpose = page
       .locator("button:has(svg.lucide.lucide-trash2)")
       .last();
-    this.removeValueName = page
+    this.removeSelectionValueName = page
       .locator("#radio-selection-value-0")
+      .getByRole("button")
+      .last();
+    this.removeRadioValueName = page
+      .locator("#radio-value-0")
       .getByRole("button")
       .last();
 
@@ -281,20 +286,27 @@ export class PlaywrightCreateProgram {
       .getByRole("radio");
     await reqruitmentVisibilityType.click();
 
-    if (
-      fieldType?.includes("Selection") ||
-      fieldType?.includes("Radio Button")
-    ) {
-      const addValueName =
-        fieldType || "".includes("Selection")
-          ? "Add Selection Value"
-          : "Add Radio Value";
-      const btnAddValue = this.page.getByRole("button", { name: addValueName });
+    if (fieldType?.includes("Selection")) {
+      const btnAddValue = this.page.getByRole("button", {
+        name: "Add Selection Value",
+      });
       await btnAddValue.click();
       await this.inputValueName.fill(radioValue || "");
+    }
+    if (fieldType?.includes("Radio")) {
+      const btnAddValue = this.page.getByRole("button", {
+        name: "Add Radio Value",
+      });
+      await btnAddValue.click();
+      await this.inputValueName.fill(radioValue || "");
+    }
 
-      if (removeValue) {
-        await this.removeValueName.click();
+    if (removeValue) {
+      if (await this.removeSelectionValueName.isVisible()) {
+        await this.removeSelectionValueName.click();
+      }
+      if (await this.removeRadioValueName.isVisible()) {
+        await this.removeRadioValueName.click();
       }
     }
 
