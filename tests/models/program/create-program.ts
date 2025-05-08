@@ -96,9 +96,10 @@ export class PlaywrightCreateProgram {
     this.inputLogo = page.getByRole("button", { name: "Program Logo" });
     this.inputBanner = page.getByRole("button", { name: "Program Banner" });
 
-    this.programColor = page.locator(
-      '[id="\\:r25\\:-form-item"] > div > .placeholder\\:text-muted-foreground'
-    );
+    this.programColor = page
+      .locator("div")
+      .filter({ hasText: /^Program Color Theme.*$/ })
+      .getByRole("textbox");
 
     this.btnAddReqruitment = page.getByRole("button", {
       name: "Add Requirement",
