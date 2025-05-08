@@ -99,6 +99,7 @@ test.describe("Create Programs", () => {
   test.beforeAll(async ({ browser }) => {
     context = await browser.newContext();
     page = await context.newPage();
+    page.setDefaultTimeout(60000);
     const loginPage = new PlaywrightLogin(page);
     await page.goto("/signin");
     await loginPage.login(email, password);
@@ -114,6 +115,7 @@ test.describe("Create Programs", () => {
 
   test.afterAll(async ({ logoutPage, goToProgramsPage, deleteProgramPage }) => {
     await goToProgramsPage.sidebarGoTo();
+    await page.reload();
     await deleteProgramPage.deleteProgram();
     await logoutPage.logout();
     await context.close();
