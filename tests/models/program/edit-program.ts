@@ -237,7 +237,7 @@ export class PlaywrightEditProgram {
 
     if (newTimezone) {
       await this.timezoneBtn.click();
-      await this.page.getByTestId(`timezone-item-${newTimezone}`).click();
+      await this.page.getByRole("option", { name: newTimezone }).click();
     }
 
     if (newStartDate) {
@@ -261,15 +261,15 @@ export class PlaywrightEditProgram {
     }
 
     if (newProgramType) {
-      const programTypeLocator = this.page.getByTestId(
-        `program-type-${newProgramType}`
-      );
+      const programTypeLocator = this.page.getByRole("radio", {
+        name: `${newProgramType}`,
+      });
       await programTypeLocator.click();
     }
     if (newProgramStatus) {
-      const programStatusLocator = this.page.getByTestId(
-        `program-status-${newProgramStatus}`
-      );
+      const programStatusLocator = this.page.getByRole("radio", {
+        name: `${newProgramStatus}`,
+      });
       await programStatusLocator.click();
     }
 
