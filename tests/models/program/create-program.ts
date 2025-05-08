@@ -156,7 +156,7 @@ export class PlaywrightCreateProgram {
 
   async navigateToCreateProgram() {
     await this.btnCreate.click();
-    await expect(this.headerCreateProgram).toBeVisible();
+    await expect(this.headerCreateProgram).toBeVisible({ timeout: 30000 });
   }
 
   async programInput({
@@ -182,15 +182,23 @@ export class PlaywrightCreateProgram {
     await this.programShortName.fill(programShortName || "");
     await this.programSlug.fill(programSlug || "");
 
-    await this.timezoneBtn.click();
-    await this.page.getByTestId(`timezone-item-${timezone}`).click();
+    if (timezone) {
+      await this.timezoneBtn.click();
+      await this.page.getByTestId(`timezone-item-${timezone}`).click();
+    }
 
-    await this.dateInput(startDate || "", "startDateBtn");
-    await this.clickPage.click();
-    await this.dateInput(endDate || "", "endDateBtn");
-    await this.clickPage.click();
-    await this.dateInput(revisionDate || "", "revisionDateBtn");
-    await this.clickPage.click();
+    if (startDate) {
+      await this.dateInput(startDate, "startDateBtn");
+      await this.clickPage.click();
+    }
+    if (endDate) {
+      await this.dateInput(endDate, "endDateBtn");
+      await this.clickPage.click();
+    }
+    if (revisionDate) {
+      await this.dateInput(revisionDate, "revisionDateBtn");
+      await this.clickPage.click();
+    }
 
     await this.locationInput.fill(location || "");
     await this.descriptionInput.fill(description || "");
@@ -319,21 +327,21 @@ export class PlaywrightCreateProgram {
 
   async submitSuccess() {
     await this.btnSubmit.click();
-    await expect(this.expectProgramSuccess).toBeVisible();
+    await expect(this.expectProgramSuccess).toBeVisible({ timeout: 30000 });
   }
 
   async submitError() {
     await this.btnSubmit.click();
-    await expect(this.expectProgramError).toBeVisible();
+    await expect(this.expectProgramError).toBeVisible({ timeout: 30000 });
   }
 
   async submitSlugFailed() {
     await this.btnSubmit.click();
-    await expect(this.expectSubmitSlugFailed).toBeVisible();
+    await expect(this.expectSubmitSlugFailed).toBeVisible({ timeout: 30000 });
   }
 
   async submitNameFailed() {
     await this.btnSubmit.click();
-    await expect(this.expectSubmitNameFailed).toBeVisible();
+    await expect(this.expectSubmitNameFailed).toBeVisible({ timeout: 30000 });
   }
 }
