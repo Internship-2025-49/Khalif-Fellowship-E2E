@@ -61,7 +61,7 @@ export type editProgramFeatures = {
 };
 
 export const programFill = {
-  programName: "Test Program",
+  programName: "Test Program Created",
   programShortName: "TP",
   programSlug: "test-program",
   timezone: "asia/jakarta",
