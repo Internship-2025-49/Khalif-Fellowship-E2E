@@ -126,7 +126,7 @@ export class PlaywrightCreateProgram {
       .getByRole("button")
       .last();
     this.removeRadioValueName = page
-      .locator("#radio-value-0")
+      .locator("#radio-option-value-0")
       .getByRole("button")
       .last();
 
@@ -293,7 +293,7 @@ export class PlaywrightCreateProgram {
       await btnAddValue.click();
       await this.inputValueName.fill(radioValue || "");
     }
-    if (fieldType?.includes("Radio")) {
+    if (fieldType?.includes("Radio Button")) {
       const btnAddValue = this.page.getByRole("button", {
         name: "Add Radio Value",
       });
